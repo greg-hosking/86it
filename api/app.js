@@ -1,9 +1,3 @@
-// ***************************
-// Environment variables setup
-// ***************************
-import dotenv from 'dotenv';
-dotenv.config();
-
 // *****************
 // Express app setup
 // *****************
@@ -40,7 +34,8 @@ app.use((err, res) => {
 // *******************
 // Express app startup
 // *******************
-const PORT = process.env.PORT || 3001;
+import config from './utils/env.js';
+const PORT = config.port || 3001;
 
 app.listen(PORT);
 console.log(`Server listening on port: ${PORT}`);
