@@ -1,5 +1,7 @@
 import express from 'express';
+
 import withDB from '../utils/db.js';
+
 const router = express.Router();
 
 router.get('/', async function (req, res, next) {

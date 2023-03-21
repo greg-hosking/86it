@@ -1,10 +1,12 @@
 import express from 'express';
+
 import config from '../utils/env.js';
-import nodemailer from 'nodemailer';
-import createError from 'http-errors';
 import withDB from '../utils/db.js';
+
 import bcrypt from 'bcrypt';
+import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
@@ -66,7 +68,7 @@ router.post('/', async function (req, res, next) {
     {
       userId: insertResult.insertedId,
     },
-    process.env.EMAIL_SECRET,
+    config.gmail.secret,
     {
       expiresIn: '1d',
     },
@@ -80,6 +82,8 @@ router.post('/', async function (req, res, next) {
       });
     }
   );
+
+  res.status(201).json({ userId: insertResult.insertedId });
 });
 
 export default router;

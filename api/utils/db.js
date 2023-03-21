@@ -1,4 +1,5 @@
 import mongodb from 'mongodb';
+
 import config from './env.js';
 
 const MongoClient = mongodb.MongoClient;
