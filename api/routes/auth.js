@@ -1,4 +1,5 @@
 import express from 'express';
+import mongodb from 'mongodb';
 
 import config from '../utils/env.js';
 import withDB from '../utils/db.js';
@@ -23,8 +24,9 @@ router.get('/verification', async function (req, res, next) {
       // Once token verified, update emailVerified in user.
       const result = await withDB(async function (db) {
         const users = db.collection('users');
+        const ObjectId = mongodb.ObjectId;
         return await users.updateOne(
-          { _id: user.id },
+          { _id: new ObjectId(user.id) },
           { $set: { emailVerified: true } }
         );
       }, res);
@@ -56,6 +58,11 @@ router.post('/', async function (req, res, next) {
     if (!user) {
       // TODO: Add error description
       return next(createError(404));
+    }
+
+    if (!user.emailVerified) {
+      // TODO: Add error description
+      return next(createError(403));
     }
 
     const match = await bcrypt.compare(password, user.password);
