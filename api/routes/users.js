@@ -1,8 +1,9 @@
 import express from 'express';
 
-import requireAuth from '../middleware/auth.js';
+import User from '../models/user.js';
+
 import config from '../utils/env.js';
-import withDB from '../utils/db.js';
+import requireAuth from '../middleware/auth.js';
 
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
@@ -20,13 +21,13 @@ const transporter = nodemailer.createTransport({
 });
 
 router.post('/', async function (req, res, next) {
+  // Validate request body.
   const { firstName, lastName, email, password } = req.body;
   if (!(firstName && lastName && email && password)) {
     return next(
       createError(
         400,
-        'Request body is missing one of the following fields: ' +
-          'firstName, lastName, email, or password.'
+        'Request body is missing firstName, lastName, email, or password.'
       )
     );
   }
@@ -35,34 +36,19 @@ router.post('/', async function (req, res, next) {
   const rounds = 10;
   const hash = await bcrypt.hash(password, rounds);
 
-  const newUser = {
+  // Create and save new user.
+  const user = new User({
     firstName: firstName,
     lastName: lastName,
     email: email,
-    emailVerified: false,
     password: hash,
-    roles: [],
-    favorite_items: [],
-  };
+  });
+  await user.save();
 
-  const insertedUser = await withDB(async function (db) {
-    const users = db.collection('users');
-    const existingUser = await users.findOne({ email: email });
-    if (existingUser) {
-      return next(
-        createError(400, 'User already exists with the given email.')
-      );
-    }
-    return await users.insertOne(newUser);
-  }, res);
-
-  if (!insertedUser) return;
-  const id = insertedUser.insertedId;
-
-  // Send verification email asynchronously.
+  // Sign token and send verification email asynchronously.
   jwt.sign(
     {
-      id: id,
+      id: user.id,
     },
     config.gmail.secret,
     {
@@ -70,10 +56,9 @@ router.post('/', async function (req, res, next) {
     },
     function (err, token) {
       if (err) {
-        return next(createError(500));
+        return next(createError(500, 'Failed to sign token.'));
       }
       const url = `http://localhost:5173/temp/verification?token=${token}`;
-
       transporter.sendMail({
         to: email,
         subject: 'Verify email address for 86it',
@@ -81,8 +66,7 @@ router.post('/', async function (req, res, next) {
       });
     }
   );
-
-  res.status(201).json({ id: id });
+  res.status(201).json('User created.');
 });
 
 router.get('/', requireAuth, async function (req, res, next) {
