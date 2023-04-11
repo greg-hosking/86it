@@ -3,7 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-  port: process.env.PORT,
+  server: {
+    port: process.env.PORT,
+    secret: process.env.SERVER_SECRET,
+  },
   db: {
     uri: process.env.MONGODB_URI,
   },
