@@ -19,14 +19,8 @@ const transporter = nodemailer.createTransport({
 });
 
 router.post('/', async function (req, res, next) {
-  if (
-    !(
-      req.body.firstName &&
-      req.body.lastName &&
-      req.body.email &&
-      req.body.password
-    )
-  ) {
+  const { firstName, lastName, email, password } = req.body;
+  if (!(firstName && lastName && email && password)) {
     return next(
       createError(
         400,
@@ -38,22 +32,22 @@ router.post('/', async function (req, res, next) {
 
   // Hash provided plaintext password.
   const rounds = 10;
-  const hash = await bcrypt.hash(req.body.password, rounds);
+  const hash = await bcrypt.hash(password, rounds);
 
   const newUser = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
     emailVerified: false,
     password: hash,
     roles: [],
     favorite_items: [],
   };
 
-  const insertResult = await withDB(async function (db) {
+  const insertedUser = await withDB(async function (db) {
     const users = db.collection('users');
-    const findResult = await users.findOne({ email: newUser.email });
-    if (findResult) {
+    const existingUser = await users.findOne({ email: email });
+    if (existingUser) {
       return next(
         createError(400, 'User already exists with the given email.')
       );
@@ -61,29 +55,30 @@ router.post('/', async function (req, res, next) {
     return await users.insertOne(newUser);
   }, res);
 
-  if (!insertResult) return;
+  if (!insertedUser) return;
+  const id = insertedUser.insertedId;
 
   // Send verification email asynchronously.
   jwt.sign(
     {
-      userId: insertResult.insertedId,
+      id: id,
     },
     config.gmail.secret,
     {
       expiresIn: '1d',
     },
     function (err, token) {
-      const url = `http://localhost:3001/verification/${token}`;
+      const url = `http://localhost:5173/temp/verification?token=${token}`;
 
       transporter.sendMail({
-        to: newUser.email,
+        to: email,
         subject: 'Verify email address for 86it',
         html: `Please <a href="${url}">click here</a> to verify your email.`,
       });
     }
   );
 
-  res.status(201).json({ userId: insertResult.insertedId });
+  res.status(201).json({ id: id });
 });
 
 export default router;
