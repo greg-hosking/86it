@@ -144,7 +144,7 @@ function SignUp() {
         </div>
         <input type='submit' disabled={emailSent} />
         <p>
-          Already have an account? <a href='/temp/signin'>Sign in.</a>
+          Already have an account? <a href='/temp/sign-in'>Sign in.</a>
         </p>
         <br />
         {emailSent && (

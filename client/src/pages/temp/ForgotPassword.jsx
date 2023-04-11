@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 
-function SignIn() {
+function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
 
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
-  }
-
   async function handleFormSubmit(event) {
     event.preventDefault();
 
-    const response = await fetch('/api/auth', {
+    const response = await fetch('/api/auth/recovery', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -23,15 +18,10 @@ function SignIn() {
       },
       body: JSON.stringify({
         email: email,
-        password: password,
       }),
     });
 
-    if (!response.ok) {
-      alert(response.status);
-    } else {
-      // const result = await response.json()
-    }
+    alert(await response.text());
   }
 
   return (
@@ -41,7 +31,8 @@ function SignIn() {
           handleFormSubmit(event);
         }}
       >
-        <h1>Sign In</h1>
+        <h1>Forgot Password</h1>
+        <p>Enter your email to get a link to reset your password.</p>
         <div>
           <label htmlFor='email-input'>Email</label>
           <input
@@ -55,27 +46,13 @@ function SignIn() {
             }}
           />
         </div>
-        <div>
-          <label htmlFor='password-input'>Password</label>
-          <input
-            type='password'
-            name='password-input'
-            id='password-input'
-            required
-            value={password}
-            onChange={(event) => {
-              handlePasswordChange(event);
-            }}
-          />
-        </div>
         <input type='submit' />
         <p>
           Don't have an account? <a href='/temp/sign-up'>Sign up.</a>
         </p>
-        <a href='/temp/forgot-password'>Forgot password?</a>
       </form>
     </>
   );
 }
 
-export default SignIn;
+export default ForgotPassword;

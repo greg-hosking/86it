@@ -20,7 +20,7 @@ function Verification() {
       setLoading(false);
 
       if (response.ok) {
-        window.location = 'http://localhost:5173/temp/signin';
+        window.location = 'http://localhost:5173/temp/sign-in';
       }
       // TODO: Handle error...
     }
