@@ -1,5 +1,6 @@
 import express from 'express';
 
+import requireAuth from '../middleware/auth.js';
 import config from '../utils/env.js';
 import withDB from '../utils/db.js';
 
@@ -11,7 +12,7 @@ import nodemailer from 'nodemailer';
 const router = express.Router();
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: config.gmail.host,
   auth: {
     user: config.gmail.user,
     pass: config.gmail.pass,
@@ -68,6 +69,9 @@ router.post('/', async function (req, res, next) {
       expiresIn: '1d',
     },
     function (err, token) {
+      if (err) {
+        return next(createError(500));
+      }
       const url = `http://localhost:5173/temp/verification?token=${token}`;
 
       transporter.sendMail({
@@ -79,6 +83,10 @@ router.post('/', async function (req, res, next) {
   );
 
   res.status(201).json({ id: id });
+});
+
+router.get('/', requireAuth, async function (req, res, next) {
+  res.status(200).json(req.user.id);
 });
 
 export default router;
