@@ -12,6 +12,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
+// **************
+// Mongoose setup
+// **************
+import mongoose from 'mongoose';
+import config from './utils/env.js';
+
+await mongoose.connect(config.db.uri);
+
 // ****************
 // API routes setup
 // ****************
@@ -35,7 +43,6 @@ app.use((err, res) => {
 // *******************
 // Express app startup
 // *******************
-import config from './utils/env.js';
 const PORT = config.server.port || 3001;
 
 app.listen(PORT);
