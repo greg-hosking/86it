@@ -11,6 +11,7 @@ export default {
     uri: process.env.MONGODB_URI,
   },
   gmail: {
+    host: 'smtp.gmail.com',
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
     secret: process.env.GMAIL_SECRET,
