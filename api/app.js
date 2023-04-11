@@ -24,7 +24,7 @@ setupRoutes(app);
 // ********************
 import createError from 'http-errors';
 
-app.use((next) => {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
@@ -36,7 +36,7 @@ app.use((err, res) => {
 // Express app startup
 // *******************
 import config from './utils/env.js';
-const PORT = config.port || 3001;
+const PORT = config.server.port || 3001;
 
 app.listen(PORT);
 console.log(`Server listening on port: ${PORT}`);
