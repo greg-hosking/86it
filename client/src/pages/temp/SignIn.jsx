@@ -41,11 +41,6 @@ function SignIn() {
           handleFormSubmit(event);
         }}
       >
-        <img
-          src='https://86it-images.s3.amazonaws.com/user.svg'
-          style={{ width: '100%', height: '100%' }}
-          draggable='false'
-        />
         <h1>Sign In</h1>
         <div>
           <label htmlFor='email-input'>Email</label>
