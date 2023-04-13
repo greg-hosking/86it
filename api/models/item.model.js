@@ -4,11 +4,13 @@ const { Schema } = mongoose;
 
 const itemSchema = new Schema(
   {
-    categoryId: {
-      type: mongoose.ObjectId,
-      ref: 'Category',
-      required: [true, 'Category ID is required.'],
-    },
+    categories: [
+      {
+        type: mongoose.ObjectId,
+        ref: 'Category',
+        default: [],
+      },
+    ],
     name: {
       type: String,
       required: [true, 'Item name is required.'],
@@ -21,35 +23,48 @@ const itemSchema = new Schema(
       type: Number,
       required: [true, 'Item price is required.'],
     },
-    image: {
-      type: String,
+    images: {
+      type: [
+        {
+          index: {
+            type: Number,
+            required: [true, 'Image index is required.'],
+            unique: true,
+          },
+          url: {
+            type: String,
+            required: [true, 'Image URL is required.'],
+            unique: true,
+          },
+        },
+      ],
+      default: [],
     },
     ingredients: [
       {
-        type: String,
+        type: mongoose.ObjectId,
+        ref: 'Ingredient',
+        default: [],
       },
     ],
-    options: [
-      {
-        type: String,
-      },
-    ],
-    allergens: [
-      {
-        type: String,
-      },
-    ],
-    dietary: [
-      {
-        type: String,
-      },
-    ],
-    tags: [
-      {
-        type: String,
-      },
-    ],
-    isAvailable: {
+    options: {
+      type: [
+        {
+          name: { type: String, required: [true, 'Option name is required.'] },
+          choices: [
+            {
+              name: {
+                type: String,
+                required: [true, 'Choice name is required.'],
+              },
+              price: Number,
+            },
+          ],
+        },
+      ],
+      default: [],
+    },
+    available: {
       type: Boolean,
       default: true,
     },
