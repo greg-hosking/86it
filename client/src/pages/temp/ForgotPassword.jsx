@@ -10,7 +10,7 @@ function ForgotPassword() {
   async function handleFormSubmit(event) {
     event.preventDefault();
 
-    const response = await fetch('/api/auth/recovery', {
+    const response = await fetch('/api/auth/forgot-password', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
