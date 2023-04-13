@@ -19,7 +19,7 @@ const userSchema = new Schema(
       required: [true, 'Email is required.'],
       unique: true,
     },
-    emailVerified: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -27,7 +27,11 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required.'],
     },
-    roles: [
+    image: {
+      type: String,
+      default: 'https://86it.s3.amazonaws.com/icons/user.svg',
+    },
+    restaurants: [
       {
         restaurantId: {
           type: mongoose.ObjectId,

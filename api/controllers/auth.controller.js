@@ -24,7 +24,7 @@ export default {
       if (!user) {
         return next(createError(404, 'User not found.'));
       }
-      user.emailVerified = true;
+      user.verified = true;
       await user.save();
     });
 
@@ -41,7 +41,7 @@ export default {
     if (!user) {
       return next(createError(404, 'User not found.'));
     }
-    if (!user.emailVerified) {
+    if (!user.verified) {
       return next(createError(403, 'Email not verified.'));
     }
 
@@ -96,7 +96,7 @@ export default {
       if (!user) {
         return next(createError(404, 'User not found.'));
       }
-      if (!user.emailVerified) {
+      if (!user.verified) {
         return next(createError(403, 'Email not verified.'));
       }
       user.password = password;
@@ -118,7 +118,7 @@ export default {
     if (!user) {
       return next(createError(404, 'User not found.'));
     }
-    if (!user.emailVerified) {
+    if (!user.verified) {
       return next(createError(403, 'Email not verified.'));
     }
 
