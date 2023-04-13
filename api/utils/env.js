@@ -10,6 +10,12 @@ export default {
   db: {
     uri: process.env.MONGODB_URI,
   },
+  aws: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    bucket: process.env.AWS_BUCKET,
+  },
   gmail: {
     host: 'smtp.gmail.com',
     user: process.env.GMAIL_USER,
