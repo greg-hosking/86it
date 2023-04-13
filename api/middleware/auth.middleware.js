@@ -3,8 +3,8 @@ import config from '../utils/env.js';
 import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
 
-export default async function requireAuth(req, res, next) {
-  const token = req.cookies['86itCookie'];
+export default async function (req, res, next) {
+  const token = req.cookies['86it'];
   if (!token) {
     return next(createError(401));
   }
