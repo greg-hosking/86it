@@ -70,11 +70,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-/**
- * Compare user password to provided password.
- * @param {String} password
- * @returns {Boolean} True if passwords match, false otherwise.
- */
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
