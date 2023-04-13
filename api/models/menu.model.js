@@ -15,62 +15,32 @@ const menuSchema = new Schema(
     },
     hours: {
       monday: {
-        from: {
-          type: String,
-        },
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       tuesday: {
-        from: {
-          type: String,
-        },
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       wednesday: {
-        from: {
-          type: String,
-        },
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       thursday: {
-        from: {
-          type: String,
-        },
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       friday: {
-        from: {
-          type: String,
-        },
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       saturday: {
-        from: {
-          type: String,
-        },
-
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
       sunday: {
-        from: {
-          type: String,
-        },
-
-        to: {
-          type: String,
-        },
+        from: String,
+        to: String,
       },
     },
     categories: [
