@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 function ResetPassword() {
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
+
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
 
   function handlePassword1Change(event) {
     setPassword1(event.target.value);
@@ -16,16 +20,28 @@ function ResetPassword() {
   async function handleFormSubmit(event) {
     event.preventDefault();
 
-    const response = await fetch('/api/auth/recovery', {
+    if (password1 !== password2) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    const response = await fetch('/api/auth/reset-password', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
+        password: password1,
       }),
     });
+
+    alert(await response.text());
+
+    if (response.ok) {
+      window.location.href = '/temp/sign-in';
+    }
   }
 
   return (
@@ -43,7 +59,6 @@ function ResetPassword() {
             name='password1-input'
             id='password1-input'
             required
-            disabled={emailSent}
             value={password1}
             onChange={(event) => {
               handlePassword1Change(event);
@@ -57,7 +72,6 @@ function ResetPassword() {
             name='password2-input'
             id='password2-input'
             required
-            disabled={emailSent}
             value={password2}
             onChange={(event) => {
               handlePassword2Change(event);
