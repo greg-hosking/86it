@@ -5,7 +5,6 @@ import User from '../models/user.js';
 import config from '../utils/env.js';
 import requireAuth from '../middleware/auth.js';
 
-import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
@@ -20,6 +19,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+/**
+ *
+ */
 router.post('/', async function (req, res, next) {
   // Validate request body.
   const { firstName, lastName, email, password } = req.body;
@@ -32,16 +34,12 @@ router.post('/', async function (req, res, next) {
     );
   }
 
-  // Hash provided plaintext password.
-  const rounds = 10;
-  const hash = await bcrypt.hash(password, rounds);
-
   // Create and save new user.
   const user = new User({
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: hash,
+    password: password,
   });
   await user.save();
 
