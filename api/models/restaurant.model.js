@@ -128,7 +128,6 @@ const restaurantSchema = new Schema(
     },
     cuisine: {
       type: String,
-      required: [true, 'Cuisine is required.'],
       enum: [
         'American',
         'Asian',
@@ -173,16 +172,19 @@ const restaurantSchema = new Schema(
     ],
     users: [
       {
-        userId: {
-          type: mongoose.ObjectId,
-          ref: 'User',
-          required: [true, 'User ID is required.'],
+        type: {
+          userId: {
+            type: mongoose.ObjectId,
+            ref: 'User',
+            required: [true, 'User ID is required.'],
+          },
+          role: {
+            type: String,
+            enum: ['owner', 'manager'],
+            required: [true, 'Role is required.'],
+          },
         },
-        role: {
-          type: String,
-          enum: ['admin', 'moderator'],
-          required: [true, 'Role is required.'],
-        },
+        default: [],
       },
     ],
   },
