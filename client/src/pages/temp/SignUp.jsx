@@ -59,7 +59,7 @@ function SignUp() {
     });
 
     const data = await response.json();
-    alert(`User ID: ${data.id}`);
+    alert(`User ID: ${data._id}`);
 
     setEmailSent(true);
   }
