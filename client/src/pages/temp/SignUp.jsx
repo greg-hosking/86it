@@ -58,8 +58,10 @@ function SignUp() {
       }),
     });
 
-    const data = await response.json();
-    alert(`User ID: ${data._id}`);
+    if (!response.ok) {
+      alert(await response.text());
+      return;
+    }
 
     setEmailSent(true);
   }
@@ -71,88 +73,91 @@ function SignUp() {
           handleFormSubmit(event);
         }}
       >
-        <h1>Sign Up</h1>
-        <div>
-          <label htmlFor='first-name-input'>First Name</label>
-          <input
-            type='text'
-            name='first-name-input'
-            id='first-name-input'
-            required
-            disabled={emailSent}
-            value={firstName}
-            onChange={(event) => {
-              handleFirstNameChange(event);
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor='last-name-input'>Last Name</label>
-          <input
-            type='text'
-            name='last-name-input'
-            id='last-name-input'
-            required
-            disabled={emailSent}
-            value={lastName}
-            onChange={(event) => {
-              handleLastNameChange(event);
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor='email-input'>Email</label>
-          <input
-            type='email'
-            name='email-input'
-            id='email-input'
-            required
-            disabled={emailSent}
-            value={email}
-            onChange={(event) => {
-              handleEmailChange(event);
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor='password1-input'>Password</label>
-          <input
-            type='password'
-            name='password1-input'
-            id='password1-input'
-            required
-            disabled={emailSent}
-            value={password1}
-            onChange={(event) => {
-              handlePassword1Change(event);
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor='password2-input'>Confirm Password</label>
-          <input
-            type='password'
-            name='password2-input'
-            id='password2-input'
-            required
-            disabled={emailSent}
-            value={password2}
-            onChange={(event) => {
-              handlePassword2Change(event);
-            }}
-          />
-        </div>
-        <input type='submit' disabled={emailSent} />
-        <p>
-          Already have an account? <a href='/temp/sign-in'>Sign in.</a>
-        </p>
-        <br />
-        {emailSent && (
+        {emailSent ? (
           <>
             <p>Account successfully created!</p>
             <p>
               Verification email sent to <b>{email}</b>
             </p>
+          </>
+        ) : (
+          <>
+            <h1>Sign Up</h1>
+            <div>
+              <label htmlFor='first-name-input'>First Name</label>
+              <input
+                type='text'
+                name='first-name-input'
+                id='first-name-input'
+                required
+                disabled={emailSent}
+                value={firstName}
+                onChange={(event) => {
+                  handleFirstNameChange(event);
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='last-name-input'>Last Name</label>
+              <input
+                type='text'
+                name='last-name-input'
+                id='last-name-input'
+                required
+                disabled={emailSent}
+                value={lastName}
+                onChange={(event) => {
+                  handleLastNameChange(event);
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='email-input'>Email</label>
+              <input
+                type='email'
+                name='email-input'
+                id='email-input'
+                required
+                disabled={emailSent}
+                value={email}
+                onChange={(event) => {
+                  handleEmailChange(event);
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='password1-input'>Password</label>
+              <input
+                type='password'
+                name='password1-input'
+                id='password1-input'
+                required
+                disabled={emailSent}
+                value={password1}
+                onChange={(event) => {
+                  handlePassword1Change(event);
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='password2-input'>Confirm Password</label>
+              <input
+                type='password'
+                name='password2-input'
+                id='password2-input'
+                required
+                disabled={emailSent}
+                value={password2}
+                onChange={(event) => {
+                  handlePassword2Change(event);
+                }}
+              />
+            </div>
+            <input type='submit' disabled={emailSent} />
+            <p>
+              Already have an account? <a href='/temp/sign-in'>Sign in.</a>
+            </p>
+            <br />
           </>
         )}
       </form>
