@@ -1,3 +1,5 @@
+import Restaurant from '../models/restaurant.model.js';
+
 import config from '../utils/env.js';
 
 import createError from 'http-errors';
@@ -20,7 +22,19 @@ export default {
       next();
     });
   },
-  isOwner: async function (req, res, next) {
+
+  isRequestedUser: async function (req, res, next) {
+    const { _id } = req.authenticatedUser;
+    const { userId } = req.body;
+
+    if (userId !== _id) {
+      return next(createError(403, 'Unauthorized.'));
+    }
+
+    next();
+  },
+
+  isRestaurantOwner: async function (req, res, next) {
     const { restaurantId } = req.params;
     const { _id } = req.authenticatedUser;
 
@@ -40,7 +54,8 @@ export default {
 
     next();
   },
-  isManager: async function (req, res, next) {
+
+  isRestaurantManager: async function (req, res, next) {
     const { restaurantId } = req.params;
     const { _id } = req.authenticatedUser;
 
