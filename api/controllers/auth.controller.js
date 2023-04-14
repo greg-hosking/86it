@@ -135,10 +135,13 @@ export default {
         }
         return res
           .status(200)
-          .clearCookie('86it')
           .cookie('86it', token, { httpOnly: true })
-          .json('Signed in. Cookie set.');
+          .json({ userId: user._id });
       }
     );
+  },
+
+  signOut: async function (req, res, next) {
+    return res.status(200).clearCookie('86it').json('Signed out.');
   },
 };
