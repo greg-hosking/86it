@@ -6,22 +6,37 @@ import transporter from '../utils/mail.js';
 
 import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
+import _ from 'lodash';
 
 export default {
   getUser: async function (req, res, next) {
-    const { _id } = req.user;
     const { userId } = req.params;
-
-    if (userId !== _id) {
-      return next(createError(403, 'Unauthorized.'));
-    }
-
     const user = await User.findOne({ _id: userId }).exec();
     if (!user) {
       return next(createError(404, 'User not found.'));
     }
-    const { firstName, lastName, email } = user;
-    res.status(200).json({ firstName, lastName, email });
+    res.status(200).json(_.omit(user.toObject(), ['password', 'verified']));
+  },
+
+  getUserRestaurants: async function (req, res, next) {
+    const { userId } = req.params;
+    const user = await User.findOne({ _id: userId }).exec();
+    if (!user) {
+      return next(createError(404, 'User not found.'));
+    }
+
+    let restaurants = [];
+    for await (const restaurant of user.restaurants) {
+      const r = await Restaurant.findOne({
+        _id: restaurant.restaurantId,
+      }).exec();
+      restaurants.push({
+        name: r.name,
+        _id: restaurant.restaurantId,
+        role: restaurant.role,
+      });
+    }
+    res.status(200).json(restaurants);
   },
 
   createUser: async function (req, res, next) {
@@ -78,27 +93,15 @@ export default {
     );
   },
 
-  getUserRestaurants: async function (req, res, next) {
-    const { _id } = req.user;
+  updateUserImage: async function (req, res, next) {
     const { userId } = req.params;
-
-    if (userId !== _id) {
-      return next(createError(403, 'Unauthorized.'));
-    }
-
-    const user = await User.findOne({ _id: userId }).exec();
+    let user = await User.findOne({ _id: userId }).exec();
     if (!user) {
       return next(createError(404, 'User not found.'));
     }
-
-    let restaurants = [];
-    for await (const restaurant of user.restaurants) {
-      const r = await Restaurant.findOne({
-        _id: restaurant.restaurantId,
-      }).exec();
-      restaurants.push({ name: r.name, _id: restaurant.restaurantId });
-    }
-    res.status(200).json(restaurants);
+    user.image = req.file.location;
+    await user.save();
+    res.status(200).json('User image updated.');
   },
 };
 
