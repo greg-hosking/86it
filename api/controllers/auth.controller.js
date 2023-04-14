@@ -65,9 +65,7 @@ export default {
             if (err) {
               return next(createError(500, err));
             }
-            res
-              .status(200)
-              .json({ message: `Reset password email sent. ${info.response}` });
+            res.status(200).json({ message: `Reset password email sent.` });
           }
         );
       }
