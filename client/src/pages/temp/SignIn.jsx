@@ -27,11 +27,13 @@ function SignIn() {
       }),
     });
 
-    if (!response.ok) {
-      alert(response.status);
-    } else {
-      alert(await response.text());
+    if (response.ok) {
+      const responseJson = await response.json();
+      window.location = `/temp/users/${responseJson.userId}/restaurants`;
+      return;
     }
+
+    alert(await response.text());
   }
 
   return (
