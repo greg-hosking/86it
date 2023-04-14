@@ -8,6 +8,7 @@ const restaurantSchema = new Schema(
       type: String,
       required: [true, 'Name is required.'],
     },
+    image: String,
     address: {
       type: {
         street1: {
@@ -180,7 +181,7 @@ const restaurantSchema = new Schema(
           },
           role: {
             type: String,
-            enum: ['owner', 'manager'],
+            enum: ['owner', 'manager', 'pending'],
             required: [true, 'Role is required.'],
           },
         },

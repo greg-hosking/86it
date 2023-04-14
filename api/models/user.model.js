@@ -31,20 +31,23 @@ const userSchema = new Schema(
       type: String,
       default: 'https://86it.s3.amazonaws.com/icons/user.svg',
     },
-    restaurants: [
-      {
-        restaurantId: {
-          type: mongoose.ObjectId,
-          ref: 'Restaurant',
-          required: [true, 'Restaurant ID is required.'],
+    restaurants: {
+      type: [
+        {
+          restaurantId: {
+            type: mongoose.ObjectId,
+            ref: 'Restaurant',
+            required: [true, 'Restaurant ID is required.'],
+          },
+          role: {
+            type: String,
+            enum: ['owner', 'manager', 'pending'],
+            required: [true, 'Role is required.'],
+          },
         },
-        role: {
-          type: String,
-          enum: ['owner', 'manager'],
-          required: [true, 'Role is required.'],
-        },
-      },
-    ],
+      ],
+      default: [],
+    },
     favoriteItems: [
       {
         type: mongoose.ObjectId,
