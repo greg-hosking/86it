@@ -9,7 +9,7 @@ export default async function (req, res, next) {
     return next(createError(401, 'Request cookies are missing token.'));
   }
 
-  jwt.verify(token, config.gmail.secret, function (err, decoded) {
+  jwt.verify(token, config.server.secret, function (err, decoded) {
     if (err) {
       return next(createError(403, 'Failed to verify token.'));
     }

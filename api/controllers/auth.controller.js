@@ -127,7 +127,7 @@ export default {
 
     jwt.sign(
       { id: user._id },
-      config.gmail.secret,
+      config.server.secret,
       { expiresIn: '1d' },
       function (err, token) {
         if (err) {
