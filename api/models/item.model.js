@@ -4,6 +4,11 @@ const { Schema } = mongoose;
 
 const itemSchema = new Schema(
   {
+    restaurant: {
+      type: mongoose.ObjectId,
+      ref: 'Restaurant',
+      required: [true, 'Item restaurant is required.'],
+    },
     categories: [
       {
         type: mongoose.ObjectId,
