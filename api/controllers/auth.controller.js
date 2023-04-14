@@ -20,7 +20,7 @@ export default {
       if (err) {
         return next(createError(403, 'Failed to verify token.'));
       }
-      const user = await User.findOne({ _id: decoded.id }).exec();
+      const user = await User.findOne({ _id: decoded._id }).exec();
       if (!user) {
         return next(createError(404, 'User not found.'));
       }
@@ -46,7 +46,7 @@ export default {
     }
 
     jwt.sign(
-      { id: user._id },
+      { _id: user._id },
       config.gmail.secret,
       { expiresIn: '1d' },
       function (err, token) {
@@ -90,7 +90,7 @@ export default {
       if (err) {
         return next(createError(403, 'Failed to verify token.'));
       }
-      const user = await User.findOne({ _id: decoded.id }).exec();
+      const user = await User.findOne({ _id: decoded._id }).exec();
       if (!user) {
         return next(createError(404, 'User not found.'));
       }
@@ -126,7 +126,7 @@ export default {
     }
 
     jwt.sign(
-      { id: user._id },
+      { _id: user._id },
       config.server.secret,
       { expiresIn: '1d' },
       function (err, token) {

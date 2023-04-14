@@ -13,7 +13,7 @@ export default async function (req, res, next) {
     if (err) {
       return next(createError(403, 'Failed to verify token.'));
     }
-    req.user = { id: decoded.id };
+    req.user = { _id: decoded._id };
     next();
   });
 }

@@ -80,7 +80,7 @@ export default {
     }
 
     jwt.sign(
-      { id: user._id },
+      { _id: user._id },
       config.gmail.secret,
       { expiresIn: '1d' },
       function (err, token) {
