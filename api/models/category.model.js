@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const categorySchema = new Schema(
   {
-    menuId: {
+    menu: {
       type: mongoose.ObjectId,
       ref: 'Menu',
       required: [true, 'Menu ID is required.'],
