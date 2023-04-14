@@ -25,7 +25,7 @@ export default {
 
   isRequestedUser: async function (req, res, next) {
     const { _id } = req.authenticatedUser;
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     if (userId !== _id) {
       return next(createError(403, 'Unauthorized.'));
@@ -68,7 +68,7 @@ export default {
       return next(createError(404, 'Restaurant not found.'));
     }
 
-    const user = restaurant.users.find((user) => user.userId === _id);
+    const user = restaurant.users.find((user) => user.userId == _id);
     if (!user || (user.role !== 'manager' && user.role !== 'owner')) {
       return next(createError(403, 'Unauthorized.'));
     }
