@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 body {
@@ -28,9 +28,18 @@ form {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 1rem;
+  width: 400px;
+  margin: auto;
 }
 
-input {
+form > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input,
+select {
   display: block;
   margin-bottom: 1rem;
   padding: 0.5rem;
