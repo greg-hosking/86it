@@ -8,6 +8,22 @@ import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
 
 export default {
+  getUser: async function (req, res, next) {
+    const { _id } = req.user;
+    const { userId } = req.params;
+
+    if (userId !== _id) {
+      return next(createError(403, 'Unauthorized.'));
+    }
+
+    const user = await User.findOne({ _id: userId }).exec();
+    if (!user) {
+      return next(createError(404, 'User not found.'));
+    }
+    const { firstName, lastName, email } = user;
+    res.status(200).json({ firstName, lastName, email });
+  },
+
   createUser: async function (req, res, next) {
     const { firstName, lastName, email, password } = req.body;
     if (!(firstName && lastName && email && password)) {
@@ -63,14 +79,25 @@ export default {
   },
 
   getUserRestaurants: async function (req, res, next) {
+    const { _id } = req.user;
     const { userId } = req.params;
+
+    if (userId !== _id) {
+      return next(createError(403, 'Unauthorized.'));
+    }
+
     const user = await User.findOne({ _id: userId }).exec();
     if (!user) {
       return next(createError(404, 'User not found.'));
     }
-    const restaurants = user.restaurants.map(async (restaurantId) => {
-      return await Restaurant.findOne({ _id: restaurantId }).exec();
-    });
+
+    let restaurants = [];
+    for await (const restaurant of user.restaurants) {
+      const r = await Restaurant.findOne({
+        _id: restaurant.restaurantId,
+      }).exec();
+      restaurants.push({ name: r.name, _id: restaurant.restaurantId });
+    }
     res.status(200).json(restaurants);
   },
 };
