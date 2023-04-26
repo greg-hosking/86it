@@ -5,7 +5,7 @@ function CreateRestaurant() {
   const [street1, setStreet1] = useState('');
   const [street2, setStreet2] = useState('');
   const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+  const [state, setState] = useState('AL');
   const [zip, setZip] = useState('');
 
   return (
