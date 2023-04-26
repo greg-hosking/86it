@@ -1,0 +1,47 @@
+{
+  "name": "86it",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "server": "nodemon server/app.js",
+    "client": "cd client && vite",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install && vite build"
+  },
+  "author": "Greg Hosking",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1357.0",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^5.1.0",
+    "mongoose": "^7.0.3",
+    "multer": "^1.4.5-lts.1",
+    "multer-s3": "^2.10.0",
+    "nodemailer": "^6.9.1",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "concurrently": "^8.0.1",
+    "nodemon": "^2.0.22",
+    "vite": "^4.1.0"
+  }
+}
