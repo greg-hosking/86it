@@ -2,8 +2,8 @@ import { createContext, useEffect, useRef, useState } from 'react';
 
 const AuthContext = createContext({
   authenticatedUser: null,
-  signIn: () => {},
-  signOut: () => {},
+  signIn: async () => {},
+  signOut: async () => {},
 });
 
 const AuthProvider = ({ children }) => {
@@ -44,11 +44,10 @@ const AuthProvider = ({ children }) => {
         password,
       }),
     });
-    if (!response.ok) {
-      return response.status;
+    if (response.ok) {
+      const user = await response.json();
+      setAuthenticatedUser(user);
     }
-    const user = await response.json();
-    setAuthenticatedUser(user);
     return response.status;
   }
 
@@ -56,10 +55,9 @@ const AuthProvider = ({ children }) => {
     const response = await fetch('/api/sessions', {
       method: 'DELETE',
     });
-    if (!response.ok) {
-      return response.status;
+    if (response.ok) {
+      setAuthenticatedUser(null);
     }
-    setAuthenticatedUser(null);
     return response.status;
   }
 
