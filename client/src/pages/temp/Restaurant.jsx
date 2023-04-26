@@ -53,6 +53,10 @@ function Restaurant() {
         email: email,
       }),
     });
+    if (!response.ok) {
+      alert('Error sending invite');
+      return;
+    }
     alert('Invite sent');
   }
 
