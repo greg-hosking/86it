@@ -48,7 +48,9 @@ async function createUser(req, res, next) {
         return next(createError(500, err));
       }
       const base =
-        config.server.env === 'PRODUCTION' ? 'TODO' : 'http://localhost:3000';
+        config.server.env === 'production'
+          ? 'https://eightysixit.herokuapp.com/'
+          : 'http://localhost:3000';
       const url = `${base}/?token=${token}`;
       transporter.sendMail(
         {
@@ -118,7 +120,9 @@ async function getPasswordResetToken(req, res, next) {
         return next(createError(500, err));
       }
       const base =
-        config.server.env === 'PRODUCTION' ? 'TODO' : 'http://localhost:3000';
+        config.server.env === 'production'
+          ? 'https://eightysixit.herokuapp.com'
+          : 'http://localhost:3000';
       const url = `${base}/reset-password?token=${token}`;
       transporter.sendMail(
         {

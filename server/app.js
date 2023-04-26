@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 import routes from './routes/routes.js';
 import config from './utils/env.js';
@@ -39,6 +41,20 @@ app.use((req, res, next) => {
 
 // Set up routes
 app.use('/api', routes);
+
+// Serve static assets if in production
+if (config.server.env === 'production') {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('Server is running...');
+  });
+}
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
