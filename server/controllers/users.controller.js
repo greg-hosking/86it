@@ -96,9 +96,9 @@ async function updateEmailVerifiedWithToken(req, res, next) {
 // GET PASSWORD RESET TOKEN
 // ************************
 async function getPasswordResetToken(req, res, next) {
-  const { email } = req.params;
+  const { email } = req.query;
   if (!email) {
-    return next(createError(400, 'Request params are missing email.'));
+    return next(createError(400, 'Request query is missing email.'));
   }
 
   const user = await User.findOne({ email }).exec();
