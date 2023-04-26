@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext.jsx';
 import Error from '../../components/Error.jsx';
 
-export default function SignIn() {
+function SignIn() {
   const { authenticatedUser, signIn } = useContext(AuthContext.AuthContext);
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ export default function SignIn() {
 
     async function verify() {
       setLoading(true);
-      const response = await fetch('/api/users/me/verified', {
+      const response = await fetch('/api/users/email-verification', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -135,3 +135,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default SignIn;

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext.jsx';
 import Error from '../../components/Error.jsx';
 
-export default function SignUp() {
+function SignUp() {
   const { authenticatedUser } = useContext(AuthContext.AuthContext);
   const navigate = useNavigate();
 
@@ -172,3 +172,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+export default SignUp;
