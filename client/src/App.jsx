@@ -1,38 +1,62 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 
-import SignUp from './pages/temp/SignUp';
-import SignIn from './pages/temp/SignIn';
-import Verification from './pages/temp/Verification';
-import ForgotPassword from './pages/temp/ForgotPassword';
-import ResetPassword from './pages/temp/ResetPassword';
-import CreateRestaurant from './pages/temp/CreateRestaurant';
-import ImageUpload from './pages/temp/ImageUpload';
-import Restaurants from './pages/temp/Restaurants';
+import SignUp from './pages/auth/SignUp';
+import SignIn from './pages/auth/SignIn';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
+
+import Restaurants from './pages/Restaurants';
+import Menus from './pages/Menus';
+import Settings from './pages/Settings';
+import Users from './pages/Users';
+
+import Sidenav from './components/Sidenav';
+import Topnav from './components/Topnav';
 
 import './App.css';
-import Restaurant from './pages/temp/Restaurant';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<SignUp />} />
-        <Route path='/temp/sign-up' element={<SignUp />} />
-        <Route path='/temp/sign-in' element={<SignIn />} />
-        <Route path='/temp/verification' element={<Verification />} />
-        <Route path='/temp/forgot-password' element={<ForgotPassword />} />
-        <Route path='/temp/reset-password' element={<ResetPassword />} />
-        <Route path='/temp/create-restaurant' element={<CreateRestaurant />} />
-        <Route path='/temp/image-upload' element={<ImageUpload />} />
         <Route
-          path='/temp/users/:userId/restaurants'
-          element={<Restaurants />}
-        />
+          path='/'
+          element={
+            <div className='public-content-container'>
+              <Outlet />
+            </div>
+          }
+        >
+          <Route path='/' element={<SignIn />} />
+          <Route path='sign-in' element={<SignIn />} />
+          <Route path='sign-up' element={<SignUp />} />
+          <Route path='forgot-password' element={<ForgotPassword />} />
+          <Route path='reset-password' element={<ResetPassword />} />
+        </Route>
         <Route
-          path='/temp/users/:userId/restaurants/:restaurantId'
-          element={<Restaurant />}
-        />
+          path='/me'
+          element={
+            <>
+              <Topnav />
+              <Sidenav />
+              <div className='private-content-container'>
+                <Outlet />
+              </div>
+            </>
+          }
+        >
+          <Route path='/me/restaurants' element={<Restaurants />} />
+          <Route
+            path='/me/restaurants/:restaurantId/menus'
+            element={<Menus />}
+          />
+          <Route
+            path='/me/restaurants/:restaurantId/users'
+            element={<Users />}
+          />
+          <Route path='/me/settings' element={<Settings />} />
+        </Route>
         <Route path='*' element={<h1>404</h1>} />
       </Routes>
     </BrowserRouter>
