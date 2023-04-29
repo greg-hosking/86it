@@ -1,0 +1,23 @@
+:root {
+  --top-nav-height: 60px;
+}
+
+#top-nav {
+  background-color: var(--secondary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  height: var(--top-nav-height);
+  justify-content: space-between;
+  padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+#top-nav a {
+  margin: auto 0;
+  color: var(--text);
+  text-decoration: none;
+}
