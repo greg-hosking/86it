@@ -191,6 +191,23 @@ const restaurantSchema = new Schema(
         default: [],
       },
     ],
+    invitations: [
+      {
+        type: {
+          userId: {
+            type: mongoose.ObjectId,
+            ref: 'User',
+            required: [true, 'User ID is required.'],
+          },
+          role: {
+            type: String,
+            enum: ['owner', 'manager', 'employee'],
+            required: [true, 'Role is required.'],
+          },
+        },
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

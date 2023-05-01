@@ -29,7 +29,6 @@ const userSchema = new Schema(
     },
     image: {
       type: String,
-      default: 'https://86it.s3.amazonaws.com/icons/user.svg',
     },
     restaurants: {
       type: [
@@ -41,7 +40,24 @@ const userSchema = new Schema(
           },
           role: {
             type: String,
-            enum: ['owner', 'manager', 'pending'],
+            enum: ['owner', 'manager', 'employee'],
+            required: [true, 'Role is required.'],
+          },
+        },
+      ],
+      default: [],
+    },
+    invitations: {
+      type: [
+        {
+          restaurantId: {
+            type: mongoose.ObjectId,
+            ref: 'Restaurant',
+            required: [true, 'Restaurant ID is required.'],
+          },
+          role: {
+            type: String,
+            enum: ['owner', 'manager', 'employee'],
             required: [true, 'Role is required.'],
           },
         },

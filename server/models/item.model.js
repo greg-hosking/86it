@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const itemSchema = new Schema(
   {
-    restaurant: {
+    restaurantId: {
       type: mongoose.ObjectId,
       ref: 'Restaurant',
-      required: [true, 'Item restaurant is required.'],
+      required: [true, 'Item restaurant ID is required.'],
     },
     categories: [
       {
