@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 import routes from './routes/routes.js';
+import createData from './utils/data.js';
 import config from './utils/env.js';
 
 const app = express();
@@ -22,7 +23,12 @@ try {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+
   console.log('Connected to MongoDB');
+
+  // Drop database (for development only)
+  console.log('Dropping database...');
+  await mongoose.connection.db.dropDatabase();
 } catch (err) {
   console.error('MongoDB connection error: ', err);
   process.exit(-1);
@@ -33,9 +39,17 @@ mongoose.connection.on('error', (err) => {
   process.exit(-1);
 });
 
+// On connection success, create development data
+console.log('Creating development data...');
+await createData();
+
 // Log requests to the console
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}`);
+  console.log(
+    `${req.method} ${req.originalUrl} ${JSON.stringify(
+      req.body
+    )} ${JSON.stringify(req.params)}`
+  );
   next();
 });
 
