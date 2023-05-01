@@ -8,18 +8,24 @@ import ResetPassword from './pages/auth/ResetPassword';
 
 import Restaurants from './pages/Restaurants';
 import Menus from './pages/Menus';
-import Settings from './pages/Settings';
+import Menu from './pages/Menu';
+import MenuEditor from './pages/MenuEditor';
+import AccountSettings from './pages/AccountSettings';
 import Users from './pages/Users';
+import RestaurantSettings from './pages/RestaurantSettings';
 
-import Sidenav from './components/Sidenav';
-import Topnav from './components/Topnav';
+import BottomNav from './components/navigation/BottomNav';
+import SideNav from './components/navigation/SideNav';
+import TopNav from './components/navigation/TopNav';
 
 import './App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/restaurants/:restaurantId' element={<Menu />} />
         <Route
           path='/'
           element={
@@ -29,33 +35,42 @@ function App() {
           }
         >
           <Route path='/' element={<SignIn />} />
-          <Route path='sign-in' element={<SignIn />} />
-          <Route path='sign-up' element={<SignUp />} />
-          <Route path='forgot-password' element={<ForgotPassword />} />
-          <Route path='reset-password' element={<ResetPassword />} />
+          <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
         </Route>
         <Route
           path='/me'
           element={
             <>
-              <Topnav />
-              <Sidenav />
+              <TopNav />
+              <SideNav />
               <div className='private-content-container'>
                 <Outlet />
               </div>
+              <BottomNav />
             </>
           }
         >
           <Route path='/me/restaurants' element={<Restaurants />} />
+          <Route path='/me/settings' element={<AccountSettings />} />
           <Route
             path='/me/restaurants/:restaurantId/menus'
             element={<Menus />}
           />
           <Route
+            path='/me/restaurants/:restaurantId/menus/:menuId'
+            element={<MenuEditor />}
+          />
+          <Route
+            path='/me/restaurants/:restaurantId/settings'
+            element={<RestaurantSettings />}
+          />
+          <Route
             path='/me/restaurants/:restaurantId/users'
             element={<Users />}
           />
-          <Route path='/me/settings' element={<Settings />} />
         </Route>
         <Route path='*' element={<h1>404</h1>} />
       </Routes>
