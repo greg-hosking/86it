@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import AuthContext from '../contexts/AuthContext.jsx';
+import RestaurantContext from '../contexts/RestaurantContext.jsx';
 
 function Restaurants() {
-  const { authenticatedUser, signOut } = useContext(AuthContext.AuthContext);
+  const { authenticatedUser } = useContext(AuthContext.AuthContext);
+  const { restaurants, currentRestaurant, handleSetCurrentRestaurant } =
+    useContext(RestaurantContext.RestaurantContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,183 +16,99 @@ function Restaurants() {
     }
   }, [authenticatedUser]);
 
-  // const { userId } = useParams();
-  // const [user, setUser] = useState({});
-  // const [restaurants, setRestaurants] = useState([]);
-  // const shouldFetch = useRef(true);
-
-  // async function handleAcceptInvite(event, restaurantId) {
-  //   console.log(event.target);
-  //   event.preventDefault();
-  //   fetch(`/api/restaurants/${restaurantId}/users/${userId}/accept`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   window.location.reload();
-  // }
-
-  // async function handleRejectInvite(event, restaurantId) {
-  //   event.preventDefault();
-  //   fetch(`/api/restaurants/${restaurantId}/users/${userId}/reject`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   window.location.reload();
-  // }
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     shouldFetch.current = false;
-
-  //     let response = await fetch(`/api/users/${userId}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     if (response.status === 401 || response.status === 403) {
-  //       alert('You are not authorized to view this page');
-  //       window.location = '/temp/sign-in';
-  //       return;
-  //     }
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       document.title = `${data.firstName}'s Restaurants`;
-  //       setUser(data);
-  //       console.log(JSON.stringify(data));
-  //     } else {
-  //       alert('Error fetching user info');
-  //     }
-
-  //     response = await fetch(`/api/users/${userId}/restaurants`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     if (response.status === 401 || response.status === 403) {
-  //       alert('You are not authorized to view this page');
-  //       window.location = '/temp/sign-in';
-  //       return;
-  //     }
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setRestaurants(data);
-  //     } else {
-  //       alert('Error fetching restaurants');
-  //     }
-  //   }
-
-  //   if (shouldFetch.current) {
-  //     fetchData();
-  //   }
-  // }, []);
-
   return (
     <div className='content-container content-container-lg'>
       <h2>My Restaurants</h2>
+
+      {restaurants.length === 0 && <p>No restaurants found</p>}
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: '0',
+          margin: '0',
+          width: '100%',
+        }}
+      >
+        {restaurants.map((restaurant) => (
+          <li
+            key={restaurant._id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0.5rem 1rem',
+              border: '1px solid #ccc',
+              borderRadius: '0.5rem',
+              marginBottom: '0.5rem',
+              gap: '1rem',
+            }}
+          >
+            <div
+              style={{
+                width: '5rem',
+                height: '5rem',
+                borderRadius: '0.5rem',
+                overflow: 'hidden',
+                backgroundImage: `url(${restaurant.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            ></div>
+            <div>
+              <h3
+                style={{
+                  marginBottom: '0.25rem',
+                }}
+              >
+                {restaurant.name}
+              </h3>
+              <p>{restaurant.address.street1}</p>
+              <p>
+                {restaurant.users.map((user) => {
+                  if (user.userId == authenticatedUser._id) {
+                    return (
+                      user.role.charAt(0).toUpperCase() + user.role.slice(1)
+                    );
+                  }
+                })}
+              </p>
+            </div>
+            <Link
+              to={`/me/restaurants/${restaurant._id}/menus`}
+              style={{
+                marginLeft: 'auto',
+                color: 'var(--text)',
+              }}
+              onClick={() => {
+                handleSetCurrentRestaurant(restaurant);
+              }}
+            >
+              <i className='fas fa-edit'></i>
+            </Link>
+            <Link
+              to={`/me/restaurants/${restaurant._id}/settings`}
+              style={{
+                color: 'var(--text)',
+              }}
+              onClick={() => {
+                handleSetCurrentRestaurant(restaurant);
+              }}
+            >
+              <i className='fas fa-gear'></i>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <input
+        type='submit'
+        value='Create New Restaurant'
+        style={{
+          marginBottom: '0',
+          marginTop: '1rem',
+        }}
+      />
     </div>
   );
 }
 
 export default Restaurants;
-
-/* <h1>My Restaurants</h1>
-      {restaurants.length === 0 && <p>No restaurants found</p>}
-      <ul>
-        {restaurants.map((restaurant) => (
-          <li key={restaurant._id}>
-            <a href={`/temp/users/${userId}/restaurants/${restaurant._id}`}>
-              {restaurant.name}
-            </a>{' '}
-            ({restaurant.role}){' '}
-            {restaurant.role === 'pending' && (
-              <>
-                <span
-                  onClick={(e) => {
-                    handleAcceptInvite(e, restaurant._id);
-                  }}
-                  style={{ color: 'green', cursor: 'pointer' }}
-                >
-                  Accept
-                </span>{' '}
-                |{' '}
-                <span
-                  onClick={(e) => {
-                    handleRejectInvite(e, restaurant._id);
-                  }}
-                  style={{ color: 'red', cursor: 'pointer' }}
-                >
-                  Reject
-                </span>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <br />
-      <a href={`/temp/create-restaurant`}>Create a restaurant.</a>
-      <br />
-      <br />
-
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-
-          const formData = new FormData();
-          formData.append('image', event.target[0].files[0]);
-
-          const response = await fetch(`/api/users/${userId}`, {
-            method: 'PATCH',
-            body: formData,
-          });
-
-          if (!response.ok) {
-            alert(response.status);
-          } else {
-            alert('Image uploaded successfully');
-          }
-
-          window.location.reload();
-        }}
-      >
-        <h4>Upload profile image</h4>
-        <br />
-        <img
-          src={user.image}
-          style={{ maxWidth: '200px', maxHeight: '200px' }}
-        />
-        <br />
-        <input type='file' name='image' />
-        <input type='submit' value='Submit' />
-      </form>
-      <br />
-      <p>
-        Signed in as {user.firstName} {user.lastName}{' '}
-        <span style={{ float: 'right' }}>
-          <a
-            href='/temp/sign-in'
-            onClick={(e) => {
-              e.preventDefault();
-              fetch('/api/sessions', {
-                method: 'DELETE',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                },
-              });
-              window.location = '/temp/sign-in';
-            }}
-          >
-            Sign out.
-          </a>
-        </span>
-      </p> */
