@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const categorySchema = new Schema(
+const sectionSchema = new Schema(
   {
-    menu: {
+    menuId: {
       type: mongoose.ObjectId,
       ref: 'Menu',
       required: [true, 'Menu ID is required.'],
@@ -26,4 +26,4 @@ const categorySchema = new Schema(
   }
 );
 
-export default mongoose.model('Category', categorySchema);
+export default mongoose.model('Category', sectionSchema);

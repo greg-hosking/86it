@@ -43,10 +43,10 @@ const menuSchema = new Schema(
         to: String,
       },
     },
-    categories: [
+    sections: [
       {
         type: mongoose.ObjectId,
-        ref: 'Category',
+        ref: 'Section',
         default: [],
       },
     ],
