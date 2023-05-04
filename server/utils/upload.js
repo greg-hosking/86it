@@ -1,52 +1,46 @@
-import aws from 'aws-sdk';
-
-import createError from 'http-errors';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
+
+import config from './env.js';
+import s3 from './s3.js';
+
+import createError from 'http-errors';
 import path from 'path';
-
-import config from '../utils/env.js';
-
-aws.config.update(
-  {
-    secretAccessKey: config.aws.secretAccessKey,
-    accessKeyId: config.aws.accessKeyId,
-    region: config.aws.region,
-  },
-  function (err) {
-    if (err) {
-      console.log(err);
-    }
-  }
-);
-
-const s3 = new aws.S3();
 
 export default multer({
   storage: multerS3({
     s3: s3,
     bucket: config.aws.bucket,
-    key: function (req, file, cb) {
-      const { userId, restaurantId, itemId } = req.params;
+    key: async function (req, file, cb) {
+      const userId = req.authenticatedUser._id;
+      const { restaurantId, itemId } = req.params;
       const ext = path.extname(file.originalname);
-      if (userId) {
-        cb(null, `users/${userId}/portrait${ext}`);
-      } else if (restaurantId && !itemId) {
-        cb(null, `restaurants/${restaurantId}/logo${ext}`);
-      } else if (restaurantId && itemId) {
-        cb(
-          null,
-          // TODO: Figure out how to manage multiple files for an item.
-          `restaurants/${restaurantId}/items/${itemId}/${file.originalname}`
-        );
-      } else {
-        cb(new Error('Invalid upload path.'));
+
+      if (userId && !restaurantId && !itemId) {
+        // Remove old avatar from S3
+        await s3
+          .deleteObjects({
+            Bucket: config.aws.bucket,
+            Delete: {
+              Objects: [
+                { Key: `users/${userId}/avatar.jpg` },
+                { Key: `users/${userId}/avatar.jpeg` },
+                { Key: `users/${userId}/avatar.png` },
+                { Key: `users/${userId}/avatar.webp` },
+                { Key: `users/${userId}/avatar.gif` },
+              ],
+            },
+          })
+          .promise();
+        // Upload new avatar to S3
+        cb(null, `users/${userId}/avatar${ext}`);
       }
+      // TODO: Handle restaurant-related uploads
     },
   }),
-  limits: { fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
+  limits: { fileSize: 8000000 }, // In bytes: 8000000 bytes = 8 MB
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/.(jpg|jpeg|png|webp)$/gm)) {
+    if (!file.originalname.match(/.(jpg|jpeg|png|webp|gif)$/gm)) {
       return cb(
         createError(
           400,
