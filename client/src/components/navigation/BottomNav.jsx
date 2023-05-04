@@ -25,8 +25,15 @@ function BottomNav() {
           <i className='fas fa-user fa-fw'></i>
         ) : (
           <>
-            {authenticatedUser.image ? (
-              <img src={authenticatedUser.image} draggable={false} />
+            {authenticatedUser.avatar ? (
+              <div
+                className='avatar'
+                style={{
+                  backgroundImage: `url(${authenticatedUser.avatar})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              ></div>
             ) : (
               <i className='fas fa-user fa-fw'></i>
             )}
