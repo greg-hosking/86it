@@ -39,9 +39,9 @@
   background-color: var(--secondary-press);
 }
 
-#bottom-nav a img {
+#bottom-nav .avatar {
   border-radius: 50%;
-  height: auto;
+  height: 2rem;
   width: 2rem;
 }
 

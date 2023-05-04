@@ -38,13 +38,13 @@
   background-color: var(--secondary-press);
 }
 
-#side-nav a img {
+#side-nav .avatar {
   border-radius: 50%;
-  height: auto;
+  height: 2rem;
   width: 2rem;
 }
 
-#side-nav img,
+#side-nav .avatar,
 #side-nav i {
   flex-shrink: 0;
   font-size: 1.5rem;
