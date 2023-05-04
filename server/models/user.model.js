@@ -27,7 +27,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required.'],
     },
-    image: {
+    avatar: {
       type: String,
     },
     restaurants: {
@@ -43,53 +43,27 @@ const userSchema = new Schema(
             enum: ['owner', 'manager', 'employee'],
             required: [true, 'Role is required.'],
           },
-        },
-      ],
-      default: [],
-    },
-    invitations: {
-      type: [
-        {
-          restaurantId: {
-            type: mongoose.ObjectId,
-            ref: 'Restaurant',
-            required: [true, 'Restaurant ID is required.'],
-          },
-          role: {
+          status: {
             type: String,
-            enum: ['owner', 'manager', 'employee'],
-            required: [true, 'Role is required.'],
+            enum: ['active', 'pending'],
+            default: 'pending',
           },
         },
       ],
       default: [],
     },
-    favoriteItems: [
-      {
-        type: mongoose.ObjectId,
-        ref: 'Item',
-        default: [],
-      },
-    ],
   },
   {
     timestamps: true,
   }
 );
 
-/**
- * Hash user password before saving.
- */
 userSchema.pre('save', async function (next) {
   const user = this;
-
-  // Only hash the password if it has been modified (or is new).
   if (!user.isModified('password')) {
     return next();
   }
-  const rounds = 10;
-  const hash = await bcrypt.hash(user.password, rounds);
-
+  const hash = await bcrypt.hash(user.password, 10);
   user.password = hash;
   next();
 });
