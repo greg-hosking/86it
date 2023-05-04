@@ -5,7 +5,7 @@ import AuthContext from '../../contexts/AuthContext.jsx';
 import Error from '../../components/Error.jsx';
 
 function ResetPassword() {
-  const { authenticatedUser, signIn } = useContext(AuthContext.AuthContext);
+  const { authenticatedUser } = useContext(AuthContext.AuthContext);
   const navigate = useNavigate();
 
   const token = new URLSearchParams(window.location.search).get('token');
@@ -36,7 +36,7 @@ function ResetPassword() {
             setLoading(false);
             return;
           }
-          const response = await fetch('/api/users/password-reset', {
+          const response = await fetch('/api/users/me/password-reset', {
             method: 'PUT',
             headers: {
               Accept: 'application/json',

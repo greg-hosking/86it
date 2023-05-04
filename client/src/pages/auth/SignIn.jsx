@@ -26,7 +26,7 @@ function SignIn() {
 
     async function verify() {
       setLoading(true);
-      const response = await fetch('/api/users/email-verification', {
+      const response = await fetch('/api/users/me/email-verification', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

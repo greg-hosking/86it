@@ -28,7 +28,7 @@ function ForgotPassword() {
           e.preventDefault();
           setLoading(true);
           const response = await fetch(
-            `/api/users/password-reset?email=${email}`,
+            `/api/users/me/password-reset?email=${email}`,
             {
               method: 'GET',
               headers: {
