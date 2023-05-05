@@ -5,7 +5,9 @@ import AuthContext from './AuthContext.jsx';
 const RestaurantContext = createContext({
   restaurants: [],
   currentRestaurant: null,
+  setRestaurants: () => {},
   handleSetCurrentRestaurant: () => {},
+  fetchRestaurants: async () => {},
 });
 
 const RestaurantProvider = ({ children }) => {
@@ -64,6 +66,7 @@ const RestaurantProvider = ({ children }) => {
       value={{
         restaurants,
         currentRestaurant,
+        setRestaurants,
         handleSetCurrentRestaurant,
         fetchRestaurants,
       }}
