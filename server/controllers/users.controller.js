@@ -1,5 +1,4 @@
 import User from '../models/user.model.js';
-import Restaurant from '../models/restaurant.model.js';
 
 import config from '../utils/env.js';
 import s3 from '../utils/s3.js';
@@ -99,15 +98,11 @@ async function updateAuthenticatedUser(req, res, next) {
     user.lastName = lastName;
   }
   if (oldPassword && newPassword) {
-    user.comparePassword(oldPassword, async function (err, isMatch) {
-      if (err) {
-        return next(createError(500, err));
-      }
-      if (!isMatch) {
-        return next(createError(401, 'Incorrect password.'));
-      }
-      user.password = newPassword;
-    });
+    const match = await user.comparePassword(oldPassword);
+    if (!match) {
+      return next(createError(401, 'Incorrect password.'));
+    }
+    user.password = newPassword;
   }
   await user.save();
   res.status(204).json(_.omit(user.toObject(), ['password']));

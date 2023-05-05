@@ -23,17 +23,6 @@ export default {
     });
   },
 
-  isRequestedUser: async function (req, res, next) {
-    const { _id } = req.authenticatedUser;
-    const { userId } = req.params;
-
-    if (userId !== _id) {
-      return next(createError(403, 'Unauthorized.'));
-    }
-
-    next();
-  },
-
   isRestaurantOwner: async function (req, res, next) {
     const { restaurantId } = req.params;
     const { _id } = req.authenticatedUser;
@@ -70,6 +59,27 @@ export default {
 
     const user = restaurant.users.find((user) => user.userId == _id);
     if (!user || (user.role !== 'manager' && user.role !== 'owner')) {
+      return next(createError(403, 'Unauthorized.'));
+    }
+
+    next();
+  },
+
+  isRestaurantEmployee: async function (req, res, next) {
+    const { restaurantId } = req.params;
+    const { _id } = req.authenticatedUser;
+
+    if (!restaurantId) {
+      return next(createError(400, 'Request params is missing restaurantId.'));
+    }
+
+    const restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
+    if (!restaurant) {
+      return next(createError(404, 'Restaurant not found.'));
+    }
+
+    const user = restaurant.users.find((user) => user.userId == _id);
+    if (!user) {
       return next(createError(403, 'Unauthorized.'));
     }
 
