@@ -1,7 +1,7 @@
 #restaurants-dropdown {
   flex-direction: 'column';
   height: 100%;
-  min-width: 10rem;
+  min-width: 15rem;
   position: 'relative';
   text-overflow: ellipsis;
 }
@@ -55,4 +55,5 @@
   height: 2.5rem;
   margin-right: 0.5rem;
   width: 2.5rem;
+  border: none;
 }
