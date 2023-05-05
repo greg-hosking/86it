@@ -25,59 +25,61 @@ function RestaurantSettings() {
 
   async function handleSave(e) {
     e.preventDefault();
-    setRestaurantFormLoading(true);
-    const response = await fetch(
-      `/api/users/me/restaurants/${currentRestaurant._id}`,
-      {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: restaurantName,
-          address: {
-            street1: street1,
-            street2: street2,
-            city: city,
-            state: state,
-            zip: zip,
-          },
-        }),
-      }
-    );
-    switch (response.status) {
-      case 204:
-        setRestaurantFormError('');
-        break;
-      default:
-        setRestaurantFormError('An unknown error occurred');
-    }
-    setRestaurantFormLoading(false);
-    alert('Restaurant saved successfully');
+    // setRestaurantFormLoading(true);
+    // const response = await fetch(
+    //   `/api/users/me/restaurants/${currentRestaurant._id}`,
+    //   {
+    //     method: 'PUT',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       name: restaurantName,
+    //       address: {
+    //         street1: street1,
+    //         street2: street2,
+    //         city: city,
+    //         state: state,
+    //         zip: zip,
+    //       },
+    //     }),
+    //   }
+    // );
+    // switch (response.status) {
+    //   case 204:
+    //     setRestaurantFormError('');
+    //     break;
+    //   default:
+    //     setRestaurantFormError('An unknown error occurred');
+    // }
+    // setRestaurantFormLoading(false);
+    // alert('Restaurant saved successfully');
+    alert('Temporarily disabled');
   }
 
   async function handleUpload(e) {
     e.preventDefault();
-    setImageFormLoading(true);
-    const formData = new FormData();
-    formData.append('image', e.target.image.files[0]);
-    const response = await fetch(
-      `/api/users/me/restaurants/${currentRestaurant._id}/image`,
-      {
-        method: 'PUT',
-        body: formData,
-      }
-    );
-    switch (response.status) {
-      case 204:
-        setImageFormError('');
-        break;
-      default:
-        setImageFormError('An unknown error occurred');
-    }
-    setImageFormLoading(false);
-    alert('Image uploaded successfully');
+    // setImageFormLoading(true);
+    // const formData = new FormData();
+    // formData.append('image', e.target.image.files[0]);
+    // const response = await fetch(
+    //   `/api/users/me/restaurants/${currentRestaurant._id}/image`,
+    //   {
+    //     method: 'PUT',
+    //     body: formData,
+    //   }
+    // );
+    // switch (response.status) {
+    //   case 204:
+    //     setImageFormError('');
+    //     break;
+    //   default:
+    //     setImageFormError('An unknown error occurred');
+    // }
+    // setImageFormLoading(false);
+    // alert('Image uploaded successfully');
+    alert('Temporarily disabled');
   }
 
   useEffect(() => {
