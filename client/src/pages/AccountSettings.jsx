@@ -13,22 +13,19 @@ function AccountSettings() {
   const [lastName, setLastName] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
+  const [password3, setPassword3] = useState('');
+  const [image, setImage] = useState(null);
 
   const [accountFormLoading, setAccountFormLoading] = useState(false);
   const [accountFormError, setAccountFormError] = useState('');
+  const [passwordFormLoading, setPasswordFormLoading] = useState(false);
+  const [passwordFormError, setPasswordFormError] = useState('');
   const [imageFormLoading, setImageFormLoading] = useState(false);
   const [imageFormError, setImageFormError] = useState('');
 
   async function handleSave(e) {
     e.preventDefault();
     setAccountFormLoading(true);
-    if (password1 !== password2) {
-      setPassword1('');
-      setPassword2('');
-      setAccountFormError('New passwords do not match');
-      setAccountFormLoading(false);
-      return;
-    }
     const response = await fetch(`/api/users/me`, {
       method: 'PUT',
       headers: {
@@ -38,13 +35,10 @@ function AccountSettings() {
       body: JSON.stringify({
         firstName: firstName,
         lastName: lastName,
-        password: password1,
       }),
     });
     switch (response.status) {
       case 204:
-        setPassword1('');
-        setPassword2('');
         setAccountFormError('');
         break;
       default:
@@ -54,12 +48,63 @@ function AccountSettings() {
     alert('Account saved successfully');
   }
 
+  async function handlePasswordChange(e) {
+    e.preventDefault();
+    setPasswordFormLoading(true);
+    if (password2 !== password3) {
+      setPassword2('');
+      setPassword3('');
+      setPasswordFormError('New passwords do not match');
+      setPasswordFormLoading(false);
+      return;
+    }
+    const response = await fetch(`/api/users/me`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oldPassword: password1,
+        newPassword: password2,
+      }),
+    });
+    switch (response.status) {
+      case 204:
+        setPassword1('');
+        setPassword2('');
+        setPassword3('');
+        setAccountFormError('');
+        break;
+      case 401:
+        setPassword1('');
+        setPassword2('');
+        setPassword3('');
+        setPasswordFormError('Incorrect password');
+        return;
+      default:
+        setAccountFormError('An unknown error occurred');
+        return;
+    }
+    setAccountFormLoading(false);
+    alert('Password reset successfully');
+  }
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+  }
+
   async function handleUpload(e) {
     e.preventDefault();
     setImageFormLoading(true);
     const formData = new FormData();
     formData.append('image', e.target.image.files[0]);
-    const response = await fetch(`/api/users/me/image`, {
+    const response = await fetch(`/api/users/me/avatar`, {
       method: 'PUT',
       body: formData,
     });
@@ -91,7 +136,7 @@ function AccountSettings() {
           <Error
             error={accountFormError}
             dismiss={() => {
-              setError('');
+              setAccountFormError('');
             }}
           />
         )}
@@ -129,51 +174,89 @@ function AccountSettings() {
                 }}
               />
             </div>
-
-            <div>
-              <label htmlFor='password1-input'>New Password</label>
-              <input
-                type='password'
-                name='password1-input'
-                id='password1-input'
-                required={password1 !== '' || password2 !== ''}
-                value={password1}
-                onChange={(e) => {
-                  setPassword1(e.target.value);
-                  setAccountFormError('');
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor='password2-input'>Confirm New Password</label>
-              <input
-                type='password'
-                name='password2-input'
-                id='password2-input'
-                required={password1 !== '' || password2 !== ''}
-                value={password2}
-                onChange={(e) => {
-                  setPassword2(e.target.value);
-                  setAccountFormError('');
-                }}
-              />
-            </div>
             <input
               type='submit'
               value={accountFormLoading ? 'Loading' : 'Save'}
               disabled={
                 accountFormLoading ||
                 (firstName === authenticatedUser.firstName &&
-                  lastName === authenticatedUser.lastName &&
-                  password1 === '' &&
-                  password2 === '')
+                  lastName === authenticatedUser.lastName)
               }
             />
           </form>
         )}
       </div>
       <div className='content-container content-container-md'>
-        <h2>Image Upload</h2>
+        <h2>Password Reset</h2>
+        {passwordFormError && (
+          <Error
+            error={passwordFormError}
+            dismiss={() => {
+              setPasswordFormError('');
+            }}
+          />
+        )}
+        {authenticatedUser && (
+          <form
+            onSubmit={(e) => {
+              handlePasswordChange(e);
+            }}
+          >
+            <div>
+              <label htmlFor='password1-input'>Old Password</label>
+              <input
+                type='password'
+                name='password1-input'
+                id='password1-input'
+                required={true}
+                value={password1}
+                onChange={(e) => {
+                  setPassword1(e.target.value);
+                  setPasswordFormError('');
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='password2-input'>New Password</label>
+              <input
+                type='password'
+                name='password2-input'
+                id='password2-input'
+                required={true}
+                value={password2}
+                onChange={(e) => {
+                  setPassword2(e.target.value);
+                  setPasswordFormError('');
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor='password3-input'>Confirm New Password</label>
+              <input
+                type='password'
+                name='password3-input'
+                id='password3-input'
+                required={true}
+                value={password3}
+                onChange={(e) => {
+                  setPassword3(e.target.value);
+                  setPasswordFormError('');
+                }}
+              />
+            </div>
+
+            <input
+              type='submit'
+              value={passwordFormLoading ? 'Loading' : 'Save'}
+              disabled={
+                password1 === '' && password2 === '' && password3 === ''
+              }
+            />
+          </form>
+        )}
+      </div>
+      <div className='content-container content-container-md'>
+        <h2>Avatar Upload</h2>
         {imageFormError && (
           <Error
             error={imageFormError}
@@ -183,7 +266,7 @@ function AccountSettings() {
           />
         )}
         <img
-          src={authenticatedUser && authenticatedUser.image}
+          src={image ? image : authenticatedUser && authenticatedUser.avatar}
           alt=''
           style={{ maxWidth: '200px', maxHeight: '200px' }}
         />
@@ -193,8 +276,13 @@ function AccountSettings() {
           }}
         >
           <div>
-            <label htmlFor='image-input'>Image</label>
-            <input type='file' id='image' name='image' />
+            <label htmlFor='image-input'>Avatar</label>
+            <input
+              type='file'
+              id='image'
+              name='image'
+              onChange={handleImageChange}
+            />
           </div>
           <input
             type='submit'
@@ -211,8 +299,20 @@ function AccountSettings() {
           style={{
             backgroundColor: 'var(--negative)',
           }}
-          onClick={() => {
-            alert('Not implemented');
+          onClick={async () => {
+            if (!confirm('Are you sure you want to delete your account?')) {
+              return;
+            }
+            const response = await fetch(`/api/users/me`, {
+              method: 'DELETE',
+            });
+            switch (response.status) {
+              case 204:
+                navigate('/sign-in');
+                break;
+              default:
+                alert('An unknown error occurred');
+            }
           }}
         />
       </div>
