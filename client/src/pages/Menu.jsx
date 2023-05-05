@@ -203,7 +203,6 @@ function Menu() {
         </div>
       ) : (
         <div
-          className='content-container content-container-lg'
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -211,6 +210,8 @@ function Menu() {
             justifyContent: 'center',
             height: '100vh',
             boxSizing: 'border-box',
+            width: '100vw',
+            overflow: 'hidden',
           }}
         >
           <h1>Oops!</h1>
