@@ -429,6 +429,7 @@ function MenuEditor() {
                           });
                           setSelectedSectionIndex(-1);
                           setSelectedItemIndex(-1);
+                          window.location.reload();
                         }}
                       ></i>
                     </li>
