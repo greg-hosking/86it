@@ -10,8 +10,10 @@ const restaurantSchema = new Schema(
     },
     image: {
       type: String,
-      default: 'https://86it.s3.amazonaws.com/restaurants/placeholder.png',
+      default: 'https://86it.s3.amazonaws.com/restaurants/placeholder.jpeg',
     },
+    logo: String,
+    banner: String,
     address: {
       type: {
         street1: {
@@ -129,6 +131,7 @@ const restaurantSchema = new Schema(
           to: String,
         },
       },
+      // required: [true, 'Hours are required.'],
     },
     cuisine: {
       type: String,
@@ -184,8 +187,13 @@ const restaurantSchema = new Schema(
           },
           role: {
             type: String,
-            enum: ['owner', 'manager', 'pending'],
+            enum: ['owner', 'manager', 'employee'],
             required: [true, 'Role is required.'],
+          },
+          status: {
+            type: String,
+            enum: ['active', 'pending'],
+            default: 'pending',
           },
         },
         default: [],

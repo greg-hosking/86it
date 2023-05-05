@@ -1,0 +1,59 @@
+#restaurants-dropdown {
+  flex-direction: 'column';
+  height: 100%;
+  min-width: 15rem;
+  position: 'relative';
+  text-overflow: ellipsis;
+}
+
+#restaurants-dropdown-selected-item b {
+  margin-right: 1rem;
+}
+
+#restaurants-dropdown-selected-item i {
+  margin-left: auto;
+  transition: rotate 0.2s ease-in-out;
+}
+
+#restaurants-dropdown.expanded #restaurants-dropdown-selected-item i {
+  rotate: 180deg;
+}
+
+#restaurants-dropdown-list {
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  left: 0;
+  list-style: none;
+  padding: 0;
+  position: 'absolute';
+  top: '100%';
+  margin: 0;
+  width: '100%';
+  z-index: 1;
+}
+
+#restaurants-dropdown-selected-item,
+#restaurants-dropdown-list li {
+  align-items: center;
+  background-color: var(--secondary);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  padding: 0.5rem;
+}
+
+#restaurants-dropdown-selected-item:hover,
+#restaurants-dropdown-list li:hover {
+  background-color: var(--secondary-hover);
+}
+
+#restaurants-dropdown-selected-item img,
+#restaurants-dropdown-list img {
+  border-radius: 0.5rem;
+  height: 2.5rem;
+  margin-right: 0.5rem;
+  width: 2.5rem;
+  border: none;
+}

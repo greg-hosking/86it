@@ -1,0 +1,27 @@
+.user-card {
+  align-items: center;
+  border: 1px solid var(--text-subdued);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.user-card-avatar {
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+  flex-shrink: 0;
+}
+
+.user-card div h3 {
+  margin-bottom: 0.25rem;
+}
+
+.user-card select {
+  margin-top: 0.5rem;
+  width: 10rem !important;
+  margin-left: auto;
+}

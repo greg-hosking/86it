@@ -1,0 +1,32 @@
+.restaurant-card {
+  align-items: center;
+  border: 1px solid var(--text-subdued);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.restaurant-card-logo {
+  border-radius: 0.5rem;
+  height: 5rem;
+  width: 5rem;
+}
+
+.restaurant-card div h3 {
+  margin-bottom: 0.25rem;
+}
+
+.restaurant-card i {
+  color: var(--text-base);
+}
+
+.restaurant-card i:hover {
+  cursor: pointer;
+}
+
+.restaurant-card i:first-of-type {
+  margin-left: auto;
+}

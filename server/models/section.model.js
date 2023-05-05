@@ -2,13 +2,8 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const categorySchema = new Schema(
+const sectionSchema = new Schema(
   {
-    menu: {
-      type: mongoose.ObjectId,
-      ref: 'Menu',
-      required: [true, 'Menu ID is required.'],
-    },
     name: {
       type: String,
       required: [true, 'Category name is required.'],
@@ -26,4 +21,4 @@ const categorySchema = new Schema(
   }
 );
 
-export default mongoose.model('Category', categorySchema);
+export default mongoose.model('Section', sectionSchema);

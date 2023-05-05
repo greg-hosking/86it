@@ -1,0 +1,75 @@
+:root {
+  --side-nav-width-collapsed: 60px;
+  --side-nav-width-expanded: 190px;
+  --side-nav-width: var(--side-nav-width-collapsed);
+}
+
+#side-nav {
+  background-color: var(--secondary);
+  bottom: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: var(--top-nav-height);
+  transition: width 0.2s ease-in-out;
+  width: var(--side-nav-width);
+  z-index: 1;
+}
+
+#side-nav a {
+  align-items: center;
+  color: var(--text-base);
+  display: flex;
+  padding: 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+#side-nav a:hover {
+  background-color: var(--secondary-hover);
+}
+
+#side-nav a:active {
+  background-color: var(--secondary-press);
+}
+
+#side-nav .avatar {
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+}
+
+#side-nav .avatar,
+#side-nav i {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+#side-nav a:last-child {
+  margin-top: auto;
+}
+
+#side-nav a:last-child i {
+  rotate: 0deg;
+  transition: rotate 0.2s ease-in-out;
+}
+
+#side-nav:not(.expanded) h3 {
+  display: none;
+}
+
+#side-nav:not(.expanded) a:last-child i {
+  rotate: 180deg;
+}
+
+@media (max-width: 900px) {
+  #side-nav {
+    display: none;
+  }
+}
