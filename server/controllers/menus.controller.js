@@ -162,6 +162,8 @@ async function deleteSection(req, res, next) {
   menu.sections.splice(index, 1);
   await menu.save();
 
+  // TODO: Delete items from S3
+
   res.status(204).json('Section deleted.');
 }
 
@@ -247,6 +249,8 @@ async function deleteItem(req, res, next) {
   const index = section.items.indexOf(itemId);
   section.items.splice(index, 1);
   await section.save();
+
+  // TODO: Delete item from S3
 
   await Item.deleteOne({ _id: itemId }).exec();
   res.status(204).json('Item deleted.');

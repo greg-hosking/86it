@@ -49,7 +49,8 @@ async function createData() {
     {
       _id: '62d9e3625bdc4a8a0b0d1608',
       name: 'Spice Garden',
-      image: 'https://86it.s3.amazonaws.com/restaurant-1.jpg',
+      image:
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1608/image.jpg',
       address: {
         street1: '123 Main St',
         city: 'Los Angeles',
@@ -91,7 +92,8 @@ async function createData() {
     {
       _id: '62d9e3625bdc4a8a0b0d1609',
       name: 'Sushi Express',
-      image: 'https://86it.s3.amazonaws.com/restaurant-2.jpg',
+      image:
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/image.jpg',
       address: {
         street1: '456 Main St',
         city: 'Los Angeles',
@@ -133,7 +135,8 @@ async function createData() {
     {
       _id: '62d9e3625bdc4a8a0b0d1610',
       name: 'La Pizzeria',
-      image: 'https://86it.s3.amazonaws.com/restaurant-3.jpg',
+      image:
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1610/image.jpg',
       address: {
         street1: '789 Main St',
         city: 'Los Angeles',
@@ -175,7 +178,8 @@ async function createData() {
     {
       _id: '62d9e3625bdc4a8a0b0d1611',
       name: 'Burger Palace',
-      image: 'https://86it.s3.amazonaws.com/restaurant-4.jpg',
+      image:
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1611/image.jpg',
       address: {
         street1: '101 Main St',
         city: 'Los Angeles',
@@ -351,7 +355,7 @@ async function createData() {
   await restaurant3.save();
   await restaurant4.save();
 
-  // Add menu items to restaurants...
+  // Add menus to restaurant 2...
   const restaurant2Menus = [
     {
       _id: '62d9e3625bdc4a8a0b0d1612',
@@ -365,32 +369,13 @@ async function createData() {
     },
   ];
 
-  // Add menus to restaurants...
-  // for (const menu of restaurant1Menus) {
-  //   const newMenu = new Menu(menu);
-  //   await newMenu.save();
-  //   restaurant1.menus.push(newMenu._id);
-  // }
   for (const menu of restaurant2Menus) {
     const newMenu = new Menu(menu);
     await newMenu.save();
     restaurant2.menus.push(newMenu._id);
   }
-  // for (const menu of restaurant3Menus) {
-  //   const newMenu = new Menu(menu);
-  //   await newMenu.save();
-  //   restaurant3.menus.push(newMenu._id);
-  // }
-  // for (const menu of restaurant4Menus) {
-  //   const newMenu = new Menu(menu);
-  //   await newMenu.save();
-  //   restaurant4.menus.push(newMenu._id);
-  // }
 
-  await restaurant1.save();
   await restaurant2.save();
-  await restaurant3.save();
-  await restaurant4.save();
 
   // Add sections to menus...
   const menu1Sections = [
@@ -519,7 +504,7 @@ async function createData() {
       description: 'Steamed soybeans',
       price: 4.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1619/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1619/image.jpg',
       ingredients: ['Edamame', 'Salt'],
       available: false,
     },
@@ -529,7 +514,7 @@ async function createData() {
       description: 'Pan-fried pork dumplings',
       price: 5.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1620/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1620/image.jpg',
       ingredients: ['Pork', 'Flour', 'Salt', 'Pepper'],
     },
     {
@@ -538,7 +523,7 @@ async function createData() {
       description: 'Deep-fried shrimp',
       price: 6.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1621/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1621/image.jpg',
       ingredients: ['Shrimp', 'Flour', 'Salt', 'Pepper'],
     },
   ];
@@ -549,7 +534,7 @@ async function createData() {
       description: 'Crab, avocado, cucumber',
       price: 7.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1622/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1622/image.jpg',
       ingredients: ['Crab', 'Avocado', 'Cucumber', 'Rice', 'Nori'],
     },
     {
@@ -558,7 +543,7 @@ async function createData() {
       description: 'Tuna, spicy mayo, cucumber',
       price: 8.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1623/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1623/image.jpg',
       ingredients: ['Tuna', 'Spicy Mayo', 'Cucumber', 'Rice', 'Nori'],
       available: false,
     },
@@ -568,7 +553,7 @@ async function createData() {
       description: 'Salmon, avocado, cucumber',
       price: 9.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1624/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1624/image.jpg',
       ingredients: ['Salmon', 'Avocado', 'Cucumber', 'Rice', 'Nori'],
     },
     {
@@ -577,7 +562,7 @@ async function createData() {
       description: 'Tuna, salmon, yellowtail, avocado, cucumber',
       price: 13.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1634/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1634/image.jpg',
       ingredients: [
         'Tuna',
         'Salmon',
@@ -596,7 +581,7 @@ async function createData() {
       description: 'Stir-fried noodles',
       price: 10.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1631/image.webp',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1631/image.webp',
       ingredients: ['Noodles', 'Pork', 'Cabbage', 'Carrots', 'Onions'],
     },
     {
@@ -605,7 +590,7 @@ async function createData() {
       description: 'Japanese curry with rice',
       price: 11.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1632/image.webp',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1632/image.webp',
       ingredients: ['Rice', 'Beef', 'Carrots', 'Potatoes', 'Onions'],
     },
     {
@@ -614,7 +599,7 @@ async function createData() {
       description: 'Deep-fried pork cutlet',
       price: 12.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1633/image.webp',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1633/image.webp',
       ingredients: ['Pork', 'Flour', 'Egg', 'Panko'],
     },
   ];
