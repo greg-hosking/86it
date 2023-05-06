@@ -13,7 +13,11 @@ export default multer({
     bucket: config.aws.bucket,
     key: async function (req, file, cb) {
       const userId = req.authenticatedUser._id;
-      const { restaurantId, itemId } = req.params;
+      let restaurantId = req.restaurantId;
+      if (!restaurantId) {
+        restaurantId = req.params.restaurantId;
+      }
+      const { itemId } = req.params;
       const ext = path.extname(file.originalname);
 
       if (userId && !restaurantId && !itemId) {
@@ -34,8 +38,11 @@ export default multer({
           .promise();
         // Upload new avatar to S3
         cb(null, `users/${userId}/avatar${ext}`);
+      } else if (restaurantId && itemId) {
+        cb(null, `restaurants/${restaurantId}/items/${itemId}/image${ext}`);
+      } else if (restaurantId) {
+        cb(null, `restaurants/${restaurantId}/image${ext}`);
       }
-      // TODO: Handle restaurant-related uploads
     },
   }),
   limits: { fileSize: 8000000 }, // In bytes: 8000000 bytes = 8 MB
