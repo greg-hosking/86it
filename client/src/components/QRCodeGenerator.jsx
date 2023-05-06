@@ -8,7 +8,6 @@ function QRCodeGenerator({ text }) {
       if (error) {
         console.error(error);
       }
-      console.log('QR code generated!');
     });
   }, [text]);
 
