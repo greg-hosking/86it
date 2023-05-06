@@ -427,7 +427,7 @@ async function createData() {
       description: 'Steamed soybeans',
       price: 4.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1619/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1619/image.jpg',
       ingredients: ['Edamame', 'Salt'],
       available: false,
     },
@@ -437,7 +437,7 @@ async function createData() {
       description: 'Pan-fried pork dumplings',
       price: 5.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1620/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1620/image.jpg',
       ingredients: ['Pork', 'Flour', 'Salt', 'Pepper'],
     },
     {
@@ -446,7 +446,7 @@ async function createData() {
       description: 'Deep-fried shrimp',
       price: 6.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1621/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1621/image.jpg',
       ingredients: ['Shrimp', 'Flour', 'Salt', 'Pepper'],
     },
   ];
@@ -457,7 +457,7 @@ async function createData() {
       description: 'Crab, avocado, cucumber',
       price: 7.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1622/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1622/image.jpg',
       ingredients: ['Crab', 'Avocado', 'Cucumber', 'Rice', 'Nori'],
     },
     {
@@ -466,7 +466,7 @@ async function createData() {
       description: 'Tuna, spicy mayo, cucumber',
       price: 8.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1623/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1623/image.jpg',
       ingredients: ['Tuna', 'Spicy Mayo', 'Cucumber', 'Rice', 'Nori'],
       available: false,
     },
@@ -476,7 +476,7 @@ async function createData() {
       description: 'Salmon, avocado, cucumber',
       price: 9.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1624/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1624/image.jpg',
       ingredients: ['Salmon', 'Avocado', 'Cucumber', 'Rice', 'Nori'],
     },
     {
@@ -485,7 +485,7 @@ async function createData() {
       description: 'Tuna, salmon, yellowtail, avocado, cucumber',
       price: 13.99,
       image:
-        'https://86it.s3.amazonaws.com/items/62d9e3625bdc4a8a0b0d1634/image.jpg',
+        'https://86it.s3.amazonaws.com/restaurants/62d9e3625bdc4a8a0b0d1609/items/62d9e3625bdc4a8a0b0d1634/image.jpg',
       ingredients: [
         'Tuna',
         'Salmon',
