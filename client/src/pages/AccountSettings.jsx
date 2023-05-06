@@ -291,7 +291,7 @@ function AccountSettings() {
           />
         </form>
       </div>
-      <div className='content-container content-container-md'>
+      {/* <div className='content-container content-container-md'>
         <h2>Account Deletion</h2>
         <input
           type='submit'
@@ -315,7 +315,7 @@ function AccountSettings() {
             }
           }}
         />
-      </div>
+      </div> */}
     </>
   );
 }
