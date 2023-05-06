@@ -9,13 +9,12 @@ import Modal from '../components/Modal.jsx';
 import RestaurantCard from '../components/RestaurantCard.jsx';
 
 function Restaurants() {
-  const { authenticatedUser } = useContext(AuthContext.AuthContext);
-  const {
-    restaurants,
-    setRestaurants,
-    handleSetCurrentRestaurant,
-    fetchRestaurants,
-  } = useContext(RestaurantContext.RestaurantContext);
+  const { authenticatedUser, setAuthenticatedUser } = useContext(
+    AuthContext.AuthContext
+  );
+  const { restaurants, setRestaurants, fetchRestaurants } = useContext(
+    RestaurantContext.RestaurantContext
+  );
   const navigate = useNavigate();
   const shouldFetch = useRef(true);
 
@@ -56,6 +55,10 @@ function Restaurants() {
         }}
       >
         <form
+          style={{
+            boxSizing: 'border-box',
+            padding: '0 1rem',
+          }}
           onSubmit={async (e) => {
             e.preventDefault();
             setLoading(true);
@@ -79,8 +82,19 @@ function Restaurants() {
               case 201:
                 const responseJson = await response.json();
                 setIsCreateRestaurantModalOpen(false);
-                handleSetCurrentRestaurant(responseJson);
-                navigate(`/me/restaurants/${responseJson._id}/menus`);
+                shouldFetch.current = true;
+                setRestaurants([...restaurants, responseJson]);
+                setAuthenticatedUser({
+                  ...authenticatedUser,
+                  restaurants: [
+                    ...authenticatedUser.restaurants,
+                    {
+                      restaurantId: responseJson._id,
+                      role: 'owner',
+                      status: 'active',
+                    },
+                  ],
+                });
                 break;
               case 400:
                 setError('Invalid restaurant information');

@@ -47,10 +47,7 @@ function Menus() {
       const menus = await response.json();
       setMenus(menus);
     }
-    // if (shouldFetch.current) {
     fetchMenus();
-    // shouldFetch.current = false;
-    // }
   }, [authenticatedUser, currentRestaurant]);
 
   return (
@@ -60,6 +57,10 @@ function Menus() {
         toggleOpen={() => setIsModalOpen(!isModalOpen)}
       >
         <form
+          style={{
+            boxSizing: 'border-box',
+            padding: '0 1rem',
+          }}
           onSubmit={async (e) => {
             e.preventDefault();
             setLoading(true);
@@ -145,21 +146,26 @@ function Menus() {
                 ))}
               </ul>
             )}
-            {authenticatedUser.restaurants.find(
-              (r) => r.restaurantId == currentRestaurant._id
-            ).role >= 'manager' && (
-              <input
-                type='submit'
-                value='Add Menu'
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-                style={{
-                  marginTop: '1rem',
-                  marginBottom: '0',
-                }}
-              />
-            )}
+            {authenticatedUser &&
+              authenticatedUser.restaurants &&
+              authenticatedUser.restaurants.find(
+                (r) => r.restaurantId == currentRestaurant._id
+              ) &&
+              authenticatedUser.restaurants.find(
+                (r) => r.restaurantId == currentRestaurant._id
+              ).role >= 'manager' && (
+                <input
+                  type='submit'
+                  value='Add Menu'
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                  style={{
+                    marginTop: '1rem',
+                    marginBottom: '0',
+                  }}
+                />
+              )}
           </>
         )}
       </div>

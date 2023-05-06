@@ -40,6 +40,9 @@ function Menu() {
           className='content-container content-container-xl'
           style={{
             padding: '0',
+            // TODO: Add desktop styles
+            maxWidth: '500px',
+            margin: '0 auto',
           }}
         >
           <div
