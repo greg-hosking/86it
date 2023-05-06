@@ -138,7 +138,7 @@ function Menu() {
                               style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                opacity: index === 1 ? 0.5 : 1,
+                                opacity: item.available ? 1 : 0.5,
                                 margin: '1rem 0',
                               }}
                             >
