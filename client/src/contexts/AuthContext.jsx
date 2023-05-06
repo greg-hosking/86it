@@ -2,6 +2,7 @@ import { createContext, useEffect, useRef, useState } from 'react';
 
 const AuthContext = createContext({
   authenticatedUser: null,
+  setAuthenticatedUser: () => {},
   signIn: async () => {},
   signOut: async () => {},
 });
@@ -65,6 +66,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         authenticatedUser,
+        setAuthenticatedUser,
         signIn,
         signOut,
       }}
