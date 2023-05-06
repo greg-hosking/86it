@@ -135,7 +135,7 @@ function Menu() {
                           <u>{section.name}</u>
                         </h3>
                         <div>
-                          {section.items.map((item, index) => (
+                          {section.items.map((item) => (
                             <div
                               key={item._id}
                               style={{
@@ -163,36 +163,38 @@ function Menu() {
                                   </span>
                                 ))}
                               </div>
-                              <div
-                                style={{
-                                  backgroundImage: `url(${item.image})`,
-                                  backgroundPosition: 'center',
-                                  backgroundSize: 'cover',
-                                  backgroundRepeat: 'no-repeat',
-                                  width: '7.5rem',
-                                  height: '7.5rem',
-                                  borderRadius: '0.5rem',
-                                  textShadow: '0 0px 10px black',
-                                  marginLeft: 'auto',
-                                  // marginRight: '2rem',
-                                }}
-                              >
-                                <i
-                                  className='fas fa-heart'
+                              {item.image && (
+                                <div
                                   style={{
-                                    color: 'white',
-                                    outline: 'none',
-                                    padding: '0.5rem',
-                                  }}
-                                ></i>
-                                <span
-                                  style={{
-                                    color: 'white',
+                                    backgroundImage: `url(${item.image})`,
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'cover',
+                                    backgroundRepeat: 'no-repeat',
+                                    width: '7.5rem',
+                                    height: '7.5rem',
+                                    borderRadius: '0.5rem',
+                                    textShadow: '0 0px 10px black',
+                                    marginLeft: 'auto',
+                                    // marginRight: '2rem',
                                   }}
                                 >
-                                  {item.likedBy.length}
-                                </span>
-                              </div>
+                                  <i
+                                    className='fas fa-heart'
+                                    style={{
+                                      color: 'white',
+                                      outline: 'none',
+                                      padding: '0.5rem',
+                                    }}
+                                  ></i>
+                                  <span
+                                    style={{
+                                      color: 'white',
+                                    }}
+                                  >
+                                    {item.likedBy.length}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
