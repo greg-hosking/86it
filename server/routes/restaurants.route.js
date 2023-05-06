@@ -3,6 +3,8 @@ import express from 'express';
 import restaurantsController from '../controllers/restaurants.controller.js';
 import auth from '../middleware/auth.middleware.js';
 
+import upload from '../utils/upload.js';
+
 const router = express.Router();
 
 router.post(
@@ -18,6 +20,19 @@ router.get(
 );
 
 router.get('/restaurants/:restaurantId', restaurantsController.getRestaurant);
+
+router.put(
+  '/users/me/restaurants/:restaurantId',
+  auth.isAuthenticated,
+  restaurantsController.updateAuthenticatedUserRestaurant
+);
+
+router.put(
+  '/users/me/restaurants/:restaurantId/image',
+  auth.isAuthenticated,
+  upload.single('image'),
+  restaurantsController.updateAuthenticatedUserRestaurantImage
+);
 
 // Restaurant users
 router.get(
