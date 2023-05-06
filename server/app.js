@@ -31,12 +31,12 @@ try {
   console.log('Connected to MongoDB');
 
   // Create data if in development
-  if (config.server.env !== 'development') {
-    await mongoose.connection.db.dropDatabase();
-    console.log('Dropped database');
-    await createData();
-    console.log('Created data');
-  }
+  // if (config.server.env !== 'production') {
+  //   await mongoose.connection.db.dropDatabase();
+  //   console.log('Dropped database');
+  //   await createData();
+  //   console.log('Created data');
+  // }
 } catch (err) {
   console.error('MongoDB connection error: ', err);
   process.exit(-1);
