@@ -119,7 +119,46 @@ async function getRestaurant(req, res, next) {
 // ************************************
 // UPDATE AUTHENTICATED USER RESTAURANT
 // ************************************
-async function updateAuthenticatedUserRestaurant(req, res, next) {}
+async function updateAuthenticatedUserRestaurant(req, res, next) {
+  const { _id } = req.authenticatedUser;
+  const user = await User.findOne({ _id: _id }).exec();
+  if (!user) {
+    return next(createError(404, 'User not found.'));
+  }
+  const { restaurantId } = req.params;
+  const restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
+  if (!restaurant) {
+    return next(createError(404, 'Restaurant not found.'));
+  }
+  const { name, address } = req.body;
+  if (name) {
+    restaurant.name = name;
+  }
+  if (address) {
+    restaurant.address = address;
+  }
+  await restaurant.save();
+  res.status(204).json(restaurant);
+}
+
+// ******************************************
+// UPDATE AUTHENTICATED USER RESTAURANT IMAGE
+// ******************************************
+async function updateAuthenticatedUserRestaurantImage(req, res, next) {
+  const { _id } = req.authenticatedUser;
+  const user = await User.findOne({ _id: _id }).exec();
+  if (!user) {
+    return next(createError(404, 'User not found.'));
+  }
+  const { restaurantId } = req.params;
+  const restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
+  if (!restaurant) {
+    return next(createError(404, 'Restaurant not found.'));
+  }
+  restaurant.image = req.file.location;
+  await restaurant.save();
+  res.status(204).json(restaurant);
+}
 
 // *****************
 // ACCEPT INVITATION
@@ -356,7 +395,6 @@ async function inviteUserToRestaurant(req, res, next) {
       Please <a href="${url}">click here</a> to join.<br><br>
       Thanks! - The 86it team`,
   });
-  console.log(recipient);
   return res.status(200).json(recipient);
 }
 
@@ -405,7 +443,6 @@ async function updateUserRole(req, res, next) {
     // restaurant.users.splice(restaurantIndex, 1);
     // await restaurant.save();
     // await user.save();
-    console.log('TODO!');
   }
   const userToUpdateIndex = userToUpdate.restaurants.findIndex((restaurant) =>
     restaurant.restaurantId.equals(restaurantId)
@@ -467,6 +504,7 @@ export default {
   getRestaurantUsers,
   getRestaurant,
   updateAuthenticatedUserRestaurant,
+  updateAuthenticatedUserRestaurantImage,
   acceptInvitation,
   declineInvitation,
   leaveRestaurant,
@@ -475,79 +513,3 @@ export default {
   updateUserRole,
   removeUserFromRestaurant,
 };
-
-// updateRestaurant: async function (req, res, next) {
-//   const { restaurantId } = req.params;
-//   const { name, address } = req.body;
-//   if (!(restaurantId && name && address)) {
-//     return next(
-//       createError(400, 'Request is missing restaurantId, name, or address.')
-//     );
-//   }
-//   let restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
-//   if (!restaurant) {
-//     return next(createError(404, 'Restaurant not found.'));
-//   }
-//   if (name) {
-//     restaurant.name = name;
-//   }
-//   if (address) {
-//     restaurant.address = address;
-//   }
-//   await restaurant.save();
-//   return res.status(200).json(restaurant);
-// },
-// updateRestaurantImage: async function (req, res, next) {
-//   const { restaurantId } = req.params;
-//   let restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
-//   if (!restaurant) {
-//     return next(createError(404, 'Restaurant not found.'));
-//   }
-//   restaurant.image = req.file.location;
-//   await restaurant.save();
-//   res.status(200).json(restaurant);
-// },
-
-// // ************************************
-// // UPDATE AUTHENTICATED USER RESTAURANT
-// // ************************************
-// async function updateAuthenticatedUserRestaurant(req, res, next) {
-//   const { _id } = req.authenticatedUser;
-//   const user = await User.findOne({ _id: _id }).exec();
-//   if (!user) {
-//     return next(createError(404, 'User not found.'));
-//   }
-//   const { restaurantId } = req.params;
-//   const restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
-//   if (!restaurant) {
-//     return next(createError(404, 'Restaurant not found.'));
-//   }
-//   const { name, address } = req.body;
-//   if (name) {
-//     restaurant.name = name;
-//   }
-//   if (address) {
-//     restaurant.address = address;
-//   }
-//   await restaurant.save();
-//   res.status(204).json(restaurant);
-// }
-
-// // ******************************************
-// // UPDATE AUTHENTICATED USER RESTAURANT IMAGE
-// // ******************************************
-// async function updateAuthenticatedUserRestaurantImage(req, res, next) {
-//   const { _id } = req.authenticatedUser;
-//   const user = await User.findOne({ _id: _id }).exec();
-//   if (!user) {
-//     return next(createError(404, 'User not found.'));
-//   }
-//   const { restaurantId } = req.params;
-//   const restaurant = await Restaurant.findOne({ _id: restaurantId }).exec();
-//   if (!restaurant) {
-//     return next(createError(404, 'Restaurant not found.'));
-//   }
-//   restaurant.image = req.file.location;
-//   await restaurant.save();
-//   res.status(204).json(restaurant);
-// }

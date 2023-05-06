@@ -18,7 +18,6 @@ function MenuEditor() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
 
   const [isNewItemModalOpen, setIsNewItemModalOpen] = useState(false);
-
   const [newSectionName, setNewSectionName] = useState('');
   const [newItemName, setNewItemName] = useState('');
   const [newItemDescription, setNewItemDescription] = useState('');
@@ -28,6 +27,11 @@ function MenuEditor() {
   const [newItemIsAvailable, setNewItemIsAvailable] = useState(true);
 
   const [image, setImage] = useState(null);
+  const [itemName, setItemName] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+  const [itemPrice, setItemPrice] = useState('');
+  const [itemIngredients, setItemIngredients] = useState([]);
+  const [itemIsAvailable, setItemIsAvailable] = useState(true);
 
   function handleImageChange(e) {
     const file = e.target.files[0];
@@ -68,10 +72,13 @@ function MenuEditor() {
         setSelectedSectionIndex(0);
         if (menu.sections[0].items.length > 0) {
           setSelectedItemIndex(0);
+          setItemName(menu.sections[0].items[0].name);
+          setItemDescription(menu.sections[0].items[0].description);
+          setItemPrice(menu.sections[0].items[0].price);
+          setItemIngredients(menu.sections[0].items[0].ingredients);
+          setItemIsAvailable(menu.sections[0].items[0].available);
         }
       }
-
-      console.log(menu);
       setMenu(menu);
     }
 
@@ -92,12 +99,13 @@ function MenuEditor() {
           setIsNewItemModalOpen(!isNewItemModalOpen);
         }}
       >
+        <h2>New Item</h2>
         <div
           style={{
-            border: '1px solid var(--text-subdued)',
             borderRadius: '0.5rem',
             padding: '1rem',
             boxSizing: 'border-box',
+            width: '100%',
           }}
         >
           <form
@@ -147,7 +155,6 @@ function MenuEditor() {
               setNewItemIngredients([]);
               setNewIngredientName('');
               setNewItemIsAvailable(true);
-              setNewItemImage(null);
               setIsNewItemModalOpen(false);
             }}
           >
@@ -381,7 +388,24 @@ function MenuEditor() {
                       }}
                       onClick={() => {
                         setSelectedSectionIndex(index);
-                        setSelectedItemIndex(0);
+                        if (
+                          menu.sections[index].items &&
+                          menu.sections[index].items.length > 0
+                        ) {
+                          setSelectedItemIndex(0);
+                          setItemName(menu.sections[index].items[0].name);
+                          setItemDescription(
+                            menu.sections[index].items[0].description
+                          );
+                          setItemPrice(menu.sections[index].items[0].price);
+                          setItemIngredients(
+                            menu.sections[index].items[0].ingredients
+                          );
+                          setItemIsAvailable(
+                            menu.sections[index].items[0].available
+                          );
+                          setImage(null);
+                        }
                       }}
                     >
                       {/* <i
@@ -427,9 +451,18 @@ function MenuEditor() {
                               ...menu.sections.slice(index + 1),
                             ],
                           });
+
+                          // Create a copy of the menu object
+                          const newMenu = { ...menu };
+
+                          // Remove the section at the specified index
+                          newMenu.sections.splice(selectedSectionIndex, 1);
+
+                          // Update the state with the new menu object
+                          setMenu(newMenu);
+
                           setSelectedSectionIndex(-1);
                           setSelectedItemIndex(-1);
-                          window.location.reload();
                         }}
                       ></i>
                     </li>
@@ -521,6 +554,12 @@ function MenuEditor() {
                           }}
                           onClick={() => {
                             setSelectedItemIndex(index);
+                            setItemName(item.name);
+                            setItemDescription(item.description);
+                            setItemPrice(item.price);
+                            setItemIngredients(item.ingredients);
+                            setItemIsAvailable(item.available);
+                            setImage(null);
                           }}
                         >
                           <h4>
@@ -557,39 +596,54 @@ function MenuEditor() {
                                   },
                                 }
                               );
-
                               if (!response.ok) {
                                 return;
                               }
-                              setMenu({
-                                ...menu,
-                                sections: [
-                                  ...menu.sections.slice(
-                                    0,
-                                    selectedSectionIndex
-                                  ),
-                                  {
-                                    ...menu.sections[selectedSectionIndex],
-                                    items: [
-                                      ...menu.sections[
-                                        selectedSectionIndex
-                                      ].items.slice(0, selectedItemIndex),
-                                      ...menu.sections[
-                                        selectedSectionIndex
-                                      ].items.slice(selectedItemIndex + 1),
-                                    ],
-                                  },
-                                  ...menu.sections.slice(
-                                    selectedSectionIndex + 1
-                                  ),
-                                ],
-                              });
+
+                              // Create a copy of the menu object
+                              const newMenu = { ...menu };
+
+                              // Get the selected section
+                              const selectedSection =
+                                newMenu.sections[selectedSectionIndex];
+
+                              // Remove the item at the specified index
+                              selectedSection.items.splice(index, 1);
+
+                              // Update the sections array in the new menu object
+                              newMenu.sections[selectedSectionIndex] =
+                                selectedSection;
+
+                              // Update the state with the new menu object
+                              setMenu(newMenu);
+
                               if (
                                 menu.sections[selectedSectionIndex].items &&
                                 menu.sections[selectedSectionIndex].items
                                   .length > 0
                               ) {
                                 setSelectedItemIndex(0);
+                                setItemName(
+                                  menu.sections[selectedSectionIndex].items[0]
+                                    .name
+                                );
+                                setItemDescription(
+                                  menu.sections[selectedSectionIndex].items[0]
+                                    .description
+                                );
+                                setItemPrice(
+                                  menu.sections[selectedSectionIndex].items[0]
+                                    .price
+                                );
+                                setItemIngredients(
+                                  menu.sections[selectedSectionIndex].items[0]
+                                    .ingredients
+                                );
+                                setItemIsAvailable(
+                                  menu.sections[selectedSectionIndex].items[0]
+                                    .available
+                                );
+                                setImage(null);
                               } else {
                                 setSelectedItemIndex(-1);
                               }
@@ -603,6 +657,9 @@ function MenuEditor() {
                   <input
                     type='submit'
                     value='Create New Item'
+                    style={{
+                      marginTop: '0.5rem',
+                    }}
                     onClick={() => {
                       setIsNewItemModalOpen(true);
                     }}
@@ -626,12 +683,9 @@ function MenuEditor() {
                   >
                     <form
                       onSubmit={async (e) => {
-                        // console.log('CLICKED!!!!!!');
                         e.preventDefault();
-                        alert('Temporarily disabled');
-                        return;
                         const formData = new FormData();
-                        formData.append('image', e.target.files[0]);
+                        formData.append('image', e.target.image.files[0]);
                         const response = await fetch(
                           `/api/users/me/restaurants/${currentRestaurant._id}/menus/${menuId}/sections/${menu.sections[selectedSectionIndex]._id}/items/${menu.sections[selectedSectionIndex].items[selectedItemIndex]._id}/image`,
                           {
@@ -639,6 +693,7 @@ function MenuEditor() {
                             body: formData,
                           }
                         );
+                        console.log(response);
                         if (!response.ok) {
                           alert('Image upload failed');
                           return;
@@ -676,17 +731,62 @@ function MenuEditor() {
                       </div>
                       <input type='submit' value='Upload' />
                     </form>
-                    <form className='item-editor-column' style={{}}>
+                    <form
+                      className='item-editor-column'
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        const response = await fetch(
+                          `/api/users/me/restaurants/${currentRestaurant._id}/menus/${menuId}/sections/${menu.sections[selectedSectionIndex]._id}/items/${menu.sections[selectedSectionIndex].items[selectedItemIndex]._id}`,
+                          {
+                            method: 'PUT',
+                            headers: {
+                              Accept: 'application/json',
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              name: itemName,
+                              description: itemDescription,
+                              price: Number(itemPrice),
+                              ingredients: itemIngredients,
+                              available: itemIsAvailable,
+                            }),
+                          }
+                        );
+
+                        if (!response.ok) {
+                          return;
+                        }
+                        const newItem = await response.json();
+                        setMenu({
+                          ...menu,
+                          sections: [
+                            ...menu.sections.slice(0, selectedSectionIndex),
+                            {
+                              ...menu.sections[selectedSectionIndex],
+                              items: [
+                                ...menu.sections[
+                                  selectedSectionIndex
+                                ].items.slice(0, selectedItemIndex),
+                                newItem,
+                                ...menu.sections[
+                                  selectedSectionIndex
+                                ].items.slice(selectedItemIndex + 1),
+                              ],
+                            },
+                            ...menu.sections.slice(selectedSectionIndex + 1),
+                          ],
+                        });
+                      }}
+                    >
                       <label htmlFor='name'>Name</label>
                       <input
                         type='text'
                         name='name'
                         id='name'
-                        value={
-                          menu.sections[selectedSectionIndex].items[
-                            selectedItemIndex
-                          ].name
-                        }
+                        value={itemName}
+                        onChange={(e) => {
+                          setItemName(e.target.value);
+                        }}
                       />
                       <div
                         style={{
@@ -707,11 +807,10 @@ function MenuEditor() {
                             type='text'
                             name='description'
                             id='description'
-                            value={
-                              menu.sections[selectedSectionIndex].items[
-                                selectedItemIndex
-                              ].description
-                            }
+                            value={itemDescription}
+                            onChange={(e) => {
+                              setItemDescription(e.target.value);
+                            }}
                           />
                         </div>
 
@@ -726,11 +825,10 @@ function MenuEditor() {
                             type='text'
                             name='price'
                             id='price'
-                            value={
-                              menu.sections[selectedSectionIndex].items[
-                                selectedItemIndex
-                              ].price
-                            }
+                            value={itemPrice}
+                            onChange={(e) => {
+                              setItemPrice(e.target.value);
+                            }}
                           />
                         </div>
                       </div>
@@ -742,9 +840,7 @@ function MenuEditor() {
                           overflowY: 'scroll',
                         }}
                       >
-                        {menu.sections[selectedSectionIndex].items[
-                          selectedItemIndex
-                        ].ingredients.map((ingredient) => (
+                        {itemIngredients.map((ingredient) => (
                           <li
                             key={ingredient}
                             style={{
@@ -756,7 +852,6 @@ function MenuEditor() {
                               padding: '0.5rem',
                               borderRadius: '0.5rem',
                               margin: '0.5rem 0',
-                              marginRight: '0.5rem',
                             }}
                           >
                             <p>{ingredient}</p>
@@ -765,6 +860,13 @@ function MenuEditor() {
                               style={{
                                 cursor: 'pointer',
                               }}
+                              onClick={() => {
+                                setItemIngredients(
+                                  itemIngredients.filter(
+                                    (i) => i !== ingredient
+                                  )
+                                );
+                              }}
                             ></i>
                           </li>
                         ))}
@@ -772,9 +874,7 @@ function MenuEditor() {
 
                       <div
                         style={{
-                          display: 'flex',
                           marginTop: '1rem',
-                          gap: '1rem',
                         }}
                       >
                         <div
@@ -785,6 +885,10 @@ function MenuEditor() {
                             name='ingredient-name'
                             id='ingredient-name'
                             placeholder='Ingredient Name'
+                            value={newIngredientName}
+                            onChange={(e) => {
+                              setNewIngredientName(e.target.value);
+                            }}
                           />
                         </div>
                         <div
@@ -794,9 +898,26 @@ function MenuEditor() {
                           }}
                         >
                           <input
-                            type='submit'
+                            type='button'
                             value='Add Ingredient'
-                            style={{}}
+                            style={{
+                              backgroundColor: 'var(--tertiary)',
+                              border: 'none',
+                              borderRadius: '0.5rem',
+                              padding: '0.5rem',
+                              color: 'var(--secondary)',
+                              fontSize: 'inherit',
+                            }}
+                            onClick={() => {
+                              if (newIngredientName === '') {
+                                return;
+                              }
+                              setItemIngredients([
+                                ...itemIngredients,
+                                newIngredientName,
+                              ]);
+                              setNewIngredientName('');
+                            }}
                           />
                         </div>
                       </div>
@@ -818,16 +939,20 @@ function MenuEditor() {
                         >
                           <input
                             type='checkbox'
-                            name='unavailable'
-                            id='unavailable'
+                            name='available'
+                            id='available'
                             style={{
                               width: '1rem',
                               height: '1rem',
                               borderRadius: '0.5rem',
                               marginRight: '0.5rem',
                             }}
+                            checked={itemIsAvailable}
+                            onChange={(e) => {
+                              setItemIsAvailable(e.target.checked);
+                            }}
                           />
-                          <label htmlFor='unavailable'>Available</label>
+                          <label htmlFor='available'>Available</label>
                         </div>
 
                         <input

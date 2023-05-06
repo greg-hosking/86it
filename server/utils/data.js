@@ -424,7 +424,6 @@ async function createData() {
     await newSection.save();
     const menu = await Menu.findOne({ _id: restaurant2.menus[0] }).exec();
     menu.sections.push(newSection._id);
-    console.log(menu);
     await menu.save();
   }
   for (const section of menu2Sections) {
@@ -432,8 +431,6 @@ async function createData() {
     await newSection.save();
     const menu = await Menu.findOne({ _id: restaurant2.menus[1] }).exec();
     menu.sections.push(newSection._id);
-    console.log(menu);
-
     await menu.save();
   }
 

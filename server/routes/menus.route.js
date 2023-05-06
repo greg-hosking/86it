@@ -7,50 +7,11 @@ import upload from '../utils/upload.js';
 
 const router = express.Router();
 
-// ROUTES:
-// GET /menus
-// POST /menus
-// GET /menus/:id
-// PUT /menus/:id
-// DELETE /menus/:id
+router.post('/', auth.isAuthenticated, menusController.createMenu);
 
-router.post(
-  '/',
-  // async function (req, res, next) {
-  //   const { restaurantId } = req.params;
-  //   console.log('restaurantId', restaurantId);
-  //   req.restaurantId = restaurantId;
-  //   next();
-  // },
-  auth.isAuthenticated,
-  menusController.createMenu
-);
+router.get('/', auth.isAuthenticated, menusController.getMenus);
 
-router.get(
-  '/',
-  // async function (req, res, next) {
-  //   const { restaurantId } = req.params;
-  //   console.log('restaurantId', restaurantId);
-  //   req.restaurantId = restaurantId;
-  //   next();
-  // },
-  auth.isAuthenticated,
-  menusController.getMenus
-);
-
-router.delete(
-  '/:menuId',
-  // async function (req, res, next) {
-  //   const { restaurantId, menuId } = req.params;
-  //   console.log('restaurantId', restaurantId);
-  //   console.log('menuId', menuId);
-  //   req.restaurantId = restaurantId;
-  //   req.menuId = menuId;
-  //   next();
-  // },
-  auth.isAuthenticated,
-  menusController.deleteMenu
-);
+router.delete('/:menuId', auth.isAuthenticated, menusController.deleteMenu);
 
 router.post(
   '/:menuId/sections',

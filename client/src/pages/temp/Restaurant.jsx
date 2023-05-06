@@ -63,7 +63,6 @@ function Restaurant() {
   useEffect(() => {
     async function fetchData() {
       shouldFetch.current = false;
-      console.log(userId, restaurantId);
       const response = await fetch(`/api/restaurants/${restaurantId}`, {
         method: 'GET',
         headers: {
