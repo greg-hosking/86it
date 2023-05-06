@@ -9,7 +9,8 @@ export default {
     secret: process.env.SERVER_SECRET,
   },
   db: {
-    uri: process.env.MONGODB_URI,
+    productionUri: process.env.MONGODB_PRODUCTION_URI,
+    developmentUri: process.env.MONGODB_DEVELOPMENT_URI,
   },
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
