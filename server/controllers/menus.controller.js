@@ -33,7 +33,6 @@ async function createMenu(req, res, next) {
 
 async function getMenus(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId } = req.params;
   const restaurantId = req.restaurantId;
 
   const user = await User.findOne({ _id: _id }).exec();
@@ -46,13 +45,11 @@ async function getMenus(req, res, next) {
   if (!restaurant) {
     return next(createError(404, 'Restaurant not found.'));
   }
-  console.log(restaurant.menus);
   res.status(200).json(restaurant.menus);
 }
 
 async function getMenu(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId } = req.params;
   const { menuId } = req.params;
   const restaurantId = req.restaurantId;
 
@@ -79,20 +76,18 @@ async function getMenu(req, res, next) {
   if (!menu) {
     return next(createError(404, 'Menu not found.'));
   }
-  console.log(menu);
   res.status(200).json(menu);
 }
 
 async function deleteMenu(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId } = req.params;
   const { menuId } = req.params;
   const restaurantId = req.restaurantId;
+  // TODO: Delete menu from restaurant and delete all sections and items from menu
 }
 
 async function createSection(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId } = req.params;
   const { menuId } = req.params;
   const restaurantId = req.restaurantId;
 
@@ -131,7 +126,6 @@ async function createSection(req, res, next) {
 
 async function deleteSection(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId, sectionId } = req.params;
   const { menuId, sectionId } = req.params;
   const restaurantId = req.restaurantId;
 
@@ -167,11 +161,12 @@ async function deleteSection(req, res, next) {
   const index = menu.sections.indexOf(sectionId);
   menu.sections.splice(index, 1);
   await menu.save();
+
+  res.status(204).json('Section deleted.');
 }
 
 async function createItem(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId, sectionId } = req.params;
   const { menuId, sectionId } = req.params;
   const restaurantId = req.restaurantId;
   const { name, description, price, ingredients } = req.body;
@@ -216,7 +211,6 @@ async function createItem(req, res, next) {
 
 async function deleteItem(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId, sectionId, itemId } = req.params;
   const { menuId, sectionId, itemId } = req.params;
   const restaurantId = req.restaurantId;
 
@@ -260,10 +254,9 @@ async function deleteItem(req, res, next) {
 
 async function updateItem(req, res, next) {
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId, sectionId, itemId } = req.params;
   const { menuId, sectionId, itemId } = req.params;
   const restaurantId = req.restaurantId;
-  const { name, description, price, ingredients } = req.body;
+  const { name, description, price, ingredients, available } = req.body;
 
   const user = await User.findOne({ _id: _id }).exec();
   if (!user) {
@@ -299,15 +292,14 @@ async function updateItem(req, res, next) {
   item.description = description;
   item.price = Number(price);
   item.ingredients = ingredients;
+  item.available = available;
   await item.save();
 
   res.status(200).json(item);
 }
 
 async function updateItemImage(req, res, next) {
-  console.log('UPDATING ITEM IMAGE!!!!');
   const { _id } = req.authenticatedUser;
-  // const { restaurantId, menuId, sectionId, itemId } = req.params;
   const { menuId, sectionId, itemId } = req.params;
   const restaurantId = req.restaurantId;
   const image = req.file.location;
