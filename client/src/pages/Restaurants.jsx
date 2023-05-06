@@ -75,7 +75,6 @@ function Restaurants() {
                 },
               }),
             });
-            console.log(response.status);
             switch (response.status) {
               case 201:
                 const responseJson = await response.json();
