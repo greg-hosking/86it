@@ -515,7 +515,7 @@ function MenuEditor() {
                 </form>
               </div>
 
-              {selectedItemIndex > -1 && (
+              {selectedSectionIndex > -1 && (
                 <div
                   className='items-column'
                   style={{
