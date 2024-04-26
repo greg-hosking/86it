@@ -1,5 +1,7 @@
 # 86it
 
+![86it App Screenshot](https://github.com/greg-hosking/86it/blob/master/assets/logo.png)
+
 86it is a menu management tool built with the MERN stack. It allows restaurants to update their menus and customers to view menus in real-time.
 
 ## Live deployment
